@@ -1,0 +1,25 @@
+{
+  "ecmaVersion": 6,
+  "libs": [
+    "browser",
+    "jquery"
+  ],
+  "loadEagerly": [
+    "./App/**/*.js",
+    "./App/**/*.es6"
+  ],
+  "dontLoad": [
+    "./App/assets/**/*.*",
+    "./App/bootstrap/**/*.*"
+  ],
+  "plugins": {
+    "complete_strings": {},
+    "node": {},
+    "node-express": {},
+    "modules": {},
+    "es_modules": {},
+    "doc_comment": {
+      "fullDocs": true
+    }
+  }
+}

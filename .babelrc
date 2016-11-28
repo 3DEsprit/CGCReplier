@@ -1,0 +1,18 @@
+{
+  "presets": [
+    "es2015",
+    "react",
+    "react-hmre",
+    "stage-0"
+  ],
+  "env": {
+    "start": {
+      "presets": [
+
+      ]
+    },
+    "development": {
+      "plugins": ["transform-react-jsx-source"]
+    }
+  }
+}
