@@ -16,7 +16,7 @@
   },
   "permissions": [
     "webRequest",
-    "*://*.cgcookie.com/"
+    "https://cgcookie.com/"
   ],
   "options_page": "options.html",
   "options_ui": {

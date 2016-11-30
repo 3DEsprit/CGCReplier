@@ -27,3 +27,7 @@ function getReplyCount(course, callback, errorCallback) {
   };
   link.send();
 }
+
+chrome.runtime.onMessage.addListener((data) => {
+  return data;  
+});
