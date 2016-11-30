@@ -1,4 +1,5 @@
 // Stuff
+var status;
 
 // Send Results to Pop Up
 function render(status) {
@@ -26,10 +27,3 @@ function getReplyCount(course, callback, errorCallback) {
   };
   link.send();
 }
-
-// Listen for change
-document.addEventListener('DOMContentLoaded', function() {
-
-  var courses = ['flow/modeling-in-blender/'];
-  getReplyCount(courses[0]);
-});
