@@ -5,29 +5,41 @@
   <link rel="stylesheet" type="text/css" href="css/options.css">
 </head>
 <body>
-  <h2>Course Types</h2>
-  <label>
-    <input class="timer" placeholder="15" />
-  </label>
-  <label>
-    <input class="type" id="blender" type="checkbox">
-    Blender
-  </label>
-  <br>
-  <label>
-    <input class="type" id="concept" type="checkbox">
-    Concept
-  </label>
-  <br />
-  <label>
-    <input class="type" id="sculpt" type="checkbox">
-    Sculpt
-  </label>
-  <br />
-  <label>
-    <input class="type" id="unity" type="checkbox">
-    Unity
-  </label>
+  <div class="courses">
+    <h2>Course Types</h2>
+    <label>
+      <input class="type" id="blender" type="checkbox">
+      Blender
+    </label>
+    <br>
+    <label>
+      <input class="type" id="concept" type="checkbox">
+      Concept
+    </label>
+    <br />
+    <label>
+      <input class="type" id="sculpt" type="checkbox">
+      Sculpt
+    </label>
+    <br />
+    <label>
+      <input class="type" id="unity" type="checkbox">
+      Unity
+    </label>
+  </div>
+  <div class="options">
+    <h2>Other Options</h2>
+    <label>
+      <input class="type" id="timer" type="text" maxlength="2" size="2" placeholder="15" />
+      Check Interval
+    </label>
+    <br />
+    <br />
+    <label>
+      <input class="type" id="notifications" type="checkbox">
+      Desktop Notifications
+    </label>
+  </div>
   <script src='prefs.js'></script>
   <script src='options.js'></script>
 </body>

@@ -11,10 +11,18 @@
     "default_popup": "popup.html"
   },
   "background": {
-    "scripts": ["bg.js"],
+    "scripts": [
+      "search.js",
+      "prefs.js",
+      "process.js",
+      "open_questions.js",
+      "bg.js"
+    ],
     "persistent": false
   },
   "permissions": [
+    "notifications",
+    "storage",
     "webRequest",
     "https://cgcookie.com/"
   ],

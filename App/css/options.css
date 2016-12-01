@@ -6,3 +6,17 @@ body {
 .type {
   text-align: right;
 }
+
+.courses, .options {
+  display: inline-block;
+  width: 50%;
+}
+
+.courses {
+
+}
+
+.options {
+  margin-left: -5px;
+  vertical-align: top;
+}
