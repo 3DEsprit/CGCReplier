@@ -16,8 +16,7 @@
       "prefs.js",
       "open_questions.js",
       "bg.js"
-    ],
-    "persistent": false
+    ]
   },
   "permissions": [
     "notifications",
