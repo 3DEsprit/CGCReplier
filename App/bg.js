@@ -1,28 +1,47 @@
 // background process
 // Load DOM Data
 (function() {
-window.replyCheck = window.replyCheck || {};
+  var mainUrl = 'https://cgcookie.com/';
+  var lessons = [
+    'course/fundamentals-of-rigging/#discussion'
+  ];
+  var timer = 15000;
+  // var lastRun;
 
-replyCheck.fetchPage = function(url, resType, cb, errCb) {
-  var xhr = new XMLHttpRequest();
-  if (resType == 'json') xhr.resType = 'text';
-  else xhr.resType = resType;
+  // function getQuestionTime(cb, type) {
+  //   replyCheck.fetchPage(mainUrl + lessons[0], 'text', function(text) {
+  //     var questions = JSON.parse(text);
+  //
+  //     for (var i = 0; i < questions.length; i++) {
+  //       if (questions[i].general_state == type) {
+  //         cb(new Date(questions[i].date + ' UTC'));
+  //         return;
+  //       }
+  //     }
+  //   });
+  // }
 
-  xhr.onreadystatechange = function(state) {
-    if (xhr.readyState == 4) {
-      if (xhr.status == 200) {
-        var res = (resType == 'json' ? JSON.parse(xhr.res) : xhr.res);
-        console.log(res);
-        cb(res);
-      } else {
-        if (errCb)
-        console.log(xhr.status);
-          errCb(xhr.status);
-      }
-    }
-  };
-  xhr.onerror = function(err) { console.log('xhr error:', err); };
-  xhr.open('GET', url, true);
-  xhr.send();
-};
+  // function updateStatus(status) {
+  //   chrome.browserAction.setTitle({title:status});
+  //
+  //   // if (lastRun === undefined) {
+  //   //   getQuestionTime(function(time) {
+  //   //     lastRun = time;
+  //   //   });
+  //   // }
+  // }
+
+  function checkPage() {
+    replyCheck.fetchPage(mainUrl + lessons[0], 'text', function(out) {
+      console.log('fetchPage: ', out);
+      chrome.browserAction.setTitle({title:out});
+    });
+    setTimeout(checkPage, timer);
+  }
+
+  function start() {
+    checkPage();
+  }
+
+  start();
 })();
