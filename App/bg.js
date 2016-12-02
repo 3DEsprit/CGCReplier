@@ -1,33 +1,34 @@
 // background process
-// Load DOM Data
 (function() {
   var mainUrl = 'https://cgcookie.com/';
   var lessons = [
     'course/fundamentals-of-rigging/#discussion'
   ];
+  var data;
 
   console.log('bg loaded');
 
   var search = new replyCheck.SearchUrls;
   var url = 'https://cgcookie.com/course/mesh-modeling-fundamentals/#discussion';
-
-  search.callConsole('Background!');
-
-  // test.getPage(url);
-  // test.fetchPage(url);
-
-  var timer = 15000;
+  // var timer = 15000;
 
   function checkPage() {
-    search.fetchPage(url, function(out) {
-      console.log('fetchPage: ', out);
-      chrome.browserAction.setTitle({title:out});
+    return search.fetchPage(url, function(out) {
+      data = out;
+      console.log('Data: ', data);
     });
-    setTimeout(checkPage, timer);
+  }
+
+  function parsePage(data) {
+    var re = '/(?:discussion--item__parent)*(?:<span>)*(?:discussion--reply-count">)(\d{1})/ig';
+    var replies = data;
+    console.log('Out: ' + data);
+    console.log('fetchPage: ', replies);
+    return replies;
   }
 
   function start() {
-    checkPage();
+    console.log(parsePage(checkPage()));
   }
 
   start();

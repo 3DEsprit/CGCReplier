@@ -20,15 +20,11 @@
       })
       .then(function(text) {
         console.log('Req successful');
-        var test = text;
-        console.log(test);
+        return text;
       })
       .catch(function(err){
-        console.log('failed', err);
+        console.log('Request failed', url, err);
       });
     }
   };
-
-  // var testingConstructor = new replyCheck.SearchUrls;
-  // testingConstructor.callConsole('testingConstructor');
 })();
