@@ -1,24 +1,34 @@
 // background process
 // Load DOM Data
 (function() {
-window.replyCheck = window.replyCheck || {};
+  console.log('Foo loaded');
+  window.replyCheck = window.replyCheck || {};
 
-replyCheck.fetchPage = function(url, resType, cb) {
-  var xhr = new XMLHttpRequest();
-  if (resType == 'json') xhr.resType = 'text';
-  else xhr.resType = resType;
+  replyCheck.SearchUrls = function() {
+    this.replyCheck = ''
+  };
 
-  xhr.onreadystatechange = function(state) {
-    if (xhr.readyState == 4) {
-      if (xhr.status == 200) {
-        var res = (resType == 'json' ? JSON.parse(xhr.res) : xhr.res);
+  replyCheck.SearchUrls.prototype = {
+    callConsole: function(file) {
+      console.log('FooFunc prototype loaded from ' + file);
+    },
+    fetchPage: function(url) {
+      fetch(url, {mode: 'cors'})
+      .then(function(res) {
         console.log(res);
-        cb(res);
-      }
+        return res.text();
+      })
+      .then(function(text) {
+        console.log('Req successful');
+        var test = text;
+        console.log(test);
+      })
+      .catch(function(err){
+        console.log('failed', err);
+      });
     }
   };
-  xhr.onerror = function(err) { console.log('xhr error:', err); };
-  xhr.open('GET', url, true);
-  xhr.send();
-};
+
+  // var testingConstructor = new replyCheck.SearchUrls;
+  // testingConstructor.callConsole('testingConstructor');
 })();

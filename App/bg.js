@@ -5,34 +5,21 @@
   var lessons = [
     'course/fundamentals-of-rigging/#discussion'
   ];
+
+  console.log('bg loaded');
+
+  var search = new replyCheck.SearchUrls;
+  var url = 'https://cgcookie.com/course/mesh-modeling-fundamentals/#discussion';
+
+  search.callConsole('Background!');
+
+  // test.getPage(url);
+  // test.fetchPage(url);
+
   var timer = 15000;
-  // var lastRun;
-
-  // function getQuestionTime(cb, type) {
-  //   replyCheck.fetchPage(mainUrl + lessons[0], 'text', function(text) {
-  //     var questions = JSON.parse(text);
-  //
-  //     for (var i = 0; i < questions.length; i++) {
-  //       if (questions[i].general_state == type) {
-  //         cb(new Date(questions[i].date + ' UTC'));
-  //         return;
-  //       }
-  //     }
-  //   });
-  // }
-
-  // function updateStatus(status) {
-  //   chrome.browserAction.setTitle({title:status});
-  //
-  //   // if (lastRun === undefined) {
-  //   //   getQuestionTime(function(time) {
-  //   //     lastRun = time;
-  //   //   });
-  //   // }
-  // }
 
   function checkPage() {
-    replyCheck.fetchPage(mainUrl + lessons[0], 'text', function(out) {
+    search.fetchPage(url, function(out) {
       console.log('fetchPage: ', out);
       chrome.browserAction.setTitle({title:out});
     });
