@@ -12,7 +12,7 @@
     callConsole: function(file) {
       console.log('FooFunc prototype loaded from ' + file);
     },
-    fetchPage: function(url) {
+    fetchPage: function(url, cb) {
       fetch(url, {mode: 'cors'})
       .then(function(res) {
         console.log(res);
@@ -20,7 +20,7 @@
       })
       .then(function(text) {
         console.log('Req successful');
-        return text;
+        cb(text);
       })
       .catch(function(err){
         console.log('Request failed', url, err);

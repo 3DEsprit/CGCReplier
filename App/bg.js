@@ -4,7 +4,7 @@
   var lessons = [
     'course/fundamentals-of-rigging/#discussion'
   ];
-  var data;
+  var replies;
 
   console.log('bg loaded');
 
@@ -14,21 +14,21 @@
 
   function checkPage() {
     return search.fetchPage(url, function(out) {
-      data = out;
-      console.log('Data: ', data);
+      var re = /(?:discussion--item__parent)*(?:<span>)*(?:discussion--reply-count">)(\d{1})/ig;
+      // console.log(out);
+      console.log('Type: ' + (typeof out));
+      replies = out.match(re);
+      console.log('Replies: ', replies);
+      for(var r in replies) {
+        if(replies[r].slice(-1, replies[r].length) === '0')
+          console.log(r + ' is Zero!');
+      }
     });
   }
 
-  function parsePage(data) {
-    var re = '/(?:discussion--item__parent)*(?:<span>)*(?:discussion--reply-count">)(\d{1})/ig';
-    var replies = data;
-    console.log('Out: ' + data);
-    console.log('fetchPage: ', replies);
-    return replies;
-  }
-
   function start() {
-    console.log(parsePage(checkPage()));
+    console.log('starting!');
+    checkPage();
   }
 
   start();
