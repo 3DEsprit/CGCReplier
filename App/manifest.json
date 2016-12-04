@@ -4,7 +4,7 @@
   "name": "CGCookie ReplyChecker",
   "description": "Find questions without answers",
   "icons": { "128": "icon.png" },
-  "version": "0.30",
+  "version": "0.32",
   "browser_action": {
     "default_title": "CGC ReplyChecker",
     "default_icon": "icon.png",
@@ -15,6 +15,7 @@
       "search.js",
       "prefs.js",
       "open_questions.js",
+      "need_replies.js",
       "bg.js"
     ]
   },
