@@ -1,10 +1,10 @@
 (function() {
-
+  // reply list getter/setter
+  console.log('open loaded');
   window.replyCheck = window.replyCheck || {};
 
   replyCheck.OpenReplies = function() {
     this._replies = {};
-    this._eventCb = null;
   }
 
   replyCheck.OpenReplies.prototype = {

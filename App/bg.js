@@ -1,10 +1,12 @@
 // background process
 (function() {
+  // watch intervals and start searching 
   var mainUrl = 'https://cgcookie.com/';
   var lessons = [
     'course/fundamentals-of-rigging/#discussion'
   ];
   var replies;
+  var openReplies = new replyCheck.OpenReplies._replies;
 
   console.log('bg loaded');
 
@@ -25,6 +27,14 @@
       }
     });
   }
+
+  chrome.runtime.onMessage.addListener((req, from, res) => {
+    if(!req.action) {
+      console.log('Action:' + req.action);
+      console.log(req, from, res);
+      console.log('Open: ', openReplies);
+    }
+  });
 
   function start() {
     console.log('starting!');
