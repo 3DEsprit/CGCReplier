@@ -4,9 +4,7 @@
   console.log('popup loaded');
 
   var openReplies = new replyCheck.OpenReplies._replies;
-
   var table = document.querySelector('#results');
-
   var open = new replyCheck.OpenReplies;
 
   function testStuff() {
@@ -23,6 +21,10 @@
     div.appendChild(a);
 
     return div;
+  }
+
+  function test() {
+    console.log('received');
   }
 
   function start() {

@@ -1,10 +1,11 @@
 // background process
 (function() {
+  // watch intervals and start searching
   var mainUrl = 'https://cgcookie.com/';
   var lessons = [
     'course/fundamentals-of-rigging/#discussion'
   ];
-  var replies = new replyCheck.OpenReplies;
+  var openReplies = new replyCheck.OpenReplies._replies;
 
   console.log('bg loaded');
 
@@ -27,21 +28,17 @@
       }
     });
   }
-
-  chrome.browserAction.onClicked.addListener(function(tab) {
-    var viewTabUrl = chrome.extension.getURL('popup.html');
-
-    var views = chrome.extension.getViews();
-    for (var i = 0; i < views.length; i++) {
-      var view = views[i];
-
-      if (view.location.href == viewTabUrl) {
-        function start() {
-          console.log('starting!');
-          checkPage();
-        }
-        start();
-      }
+  chrome.runtime.onMessage.addListener((req, from, res) => {
+    if(!req.action) {
+      console.log('Action:' + req.action);
+      console.log(req, from, res);
+      console.log('Open: ', openReplies);
     }
   });
+
+  function start() {
+    console.log('starting!');
+    checkPage();
+  }
+  start();
 })();

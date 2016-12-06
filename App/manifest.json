@@ -15,6 +15,7 @@
       "search.js",
       "prefs.js",
       "open_questions.js",
+      "need_replies.js",
       "bg.js"
     ]
   },
