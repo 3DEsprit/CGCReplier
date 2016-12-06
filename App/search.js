@@ -1,7 +1,8 @@
 // background process
 // Load DOM Data
 (function() {
-  console.log('Foo loaded');
+  // module to grab pages
+  console.log('Search loaded');
   window.replyCheck = window.replyCheck || {};
 
   replyCheck.SearchUrls = function() {
