@@ -4,7 +4,9 @@
   window.replyCheck = window.replyCheck || {};
 
   replyCheck.OpenReplies = function() {
-    this._replies = {};
+    this._replies = {
+      url: 'test.html'
+    };
   }
 
   replyCheck.OpenReplies.prototype = {
@@ -24,12 +26,5 @@
     findReply: function(reply) {
       // find?
     }
-  };
-
-  replyCheck.getQuestions = function() {
-    var bg = chrome.extension.getBackgroundPage();
-    if (!bg.replyCheck.hasOwnProperty("openReplies"))
-      bg.replyCheck.openReplies = new replyCheck.OpenReplies;
-    return bg.replyCheck.openReplies;
   };
 })();

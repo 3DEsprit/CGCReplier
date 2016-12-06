@@ -4,7 +4,7 @@
   window.replyCheck = window.replyCheck || {};
 
   replyCheck.NeedReplies = function() {
-    this._replies = {};
+    this._total = 0;
   };
 
   replyCheck.NeedReplies.prototype = {

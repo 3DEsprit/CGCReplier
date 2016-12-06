@@ -3,7 +3,6 @@
   // list replies and add in list. Grab titles
   console.log('popup loaded');
 
-  var openReplies = new replyCheck.OpenReplies._replies;
   var table = document.querySelector('#results');
   var open = new replyCheck.OpenReplies;
 

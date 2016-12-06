@@ -5,14 +5,13 @@
   var lessons = [
     'course/fundamentals-of-rigging/#discussion'
   ];
-  var openReplies = new replyCheck.OpenReplies._replies;
+  var openReplies = new replyCheck.OpenReplies;
 
   console.log('bg loaded');
 
   var search = new replyCheck.SearchUrls;
   var url = 'https://cgcookie.com/course/mesh-modeling-fundamentals/#discussion';
   var results = document.querySelector('results');
-  // var timer = 15000;
 
   function checkPage() {
     return search.fetchPage(url, function(out) {
@@ -24,16 +23,16 @@
       for(var r in matches) {
         if(matches[r].slice(-1, matches[r].length) === '0')
           console.log(r + ' is Zero!');
-          replies._replies = {url: url};
+          openReplies._replies = {url: url};
       }
     });
   }
+
   chrome.runtime.onMessage.addListener((req, from, res) => {
-    if(!req.action) {
+    if(!req.action)
       console.log('Action:' + req.action);
       console.log(req, from, res);
-      console.log('Open: ', openReplies);
-    }
+      console.log('Open: ', openReplies._replies);
   });
 
   function start() {
