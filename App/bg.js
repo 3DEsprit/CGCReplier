@@ -23,18 +23,10 @@
       for(var r in matches) {
         if(matches[r].slice(-1, matches[r].length) === '0')
           console.log(r + ' is Zero!');
-          openReplies._replies = {url: url};
+          openReplies._replies.push(url);
       }
     });
   }
-
-  chrome.runtime.onMessage.addListener((req, from, res) => {
-    if(!req.action)
-      console.log('Action:' + req.action);
-      console.log(req, from, res);
-      console.log('Open: ', openReplies._replies);
-  });
-
   function start() {
     console.log('starting!');
     checkPage();

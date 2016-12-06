@@ -6,10 +6,6 @@
   var table = document.querySelector('#results');
   var open = new replyCheck.OpenReplies;
 
-  function testStuff() {
-    console.log('Replies: ', open._replies);
-  }
-
   function createQuestionLink(q) {
     var div = document.createElement('div');
     div.className = 'questions';
@@ -22,14 +18,15 @@
     return div;
   }
 
-  function test() {
-    console.log('received');
+  function searchList() {
+    open._replies.map((out) => {
+      console.log(out);
+    });
   }
 
   function start() {
-    console.log('start popup');
-    testStuff();
+    console.log('start popup ' + chrome.app.getDetails().version);
+    searchList();
   }
-
   start();
 })();

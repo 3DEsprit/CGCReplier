@@ -1,4 +1,4 @@
-// option handlers
+// option handlersjj
 
 (function() {
   // change interval and reply list types
@@ -15,8 +15,6 @@
         prefs.setAlerts(noteBox.checked);
       });
     });
-
     var courseBox = document.QuerySelector('');
-
   }
 })();

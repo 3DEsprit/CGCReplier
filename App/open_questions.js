@@ -4,9 +4,9 @@
   window.replyCheck = window.replyCheck || {};
 
   replyCheck.OpenReplies = function() {
-    this._replies = {
-      url: 'test.html'
-    };
+    this._replies = [
+      'test.html'
+    ];
   }
 
   replyCheck.OpenReplies.prototype = {
@@ -15,9 +15,7 @@
         cb(this._replies[key]);
         console.log(this._replies);
     },
-    setReply: function(reply) {
-      var result = document.createElement('LI');
-      // var text = document.createNode('Test');
+    setReply: function(replies) {
       result.appendChild(replies[r]);
     },
     removeReply: function(reply) {
