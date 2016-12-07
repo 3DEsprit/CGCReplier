@@ -1,10 +1,10 @@
-// Stuff
 (function() {
-  // list replies and add in list. Grab titles
-  console.log('popup loaded');
+  // Popup Content Script
+  console.log('Popup loaded');
 
-  var table = document.querySelector('#results');
+  // call object from background here
   var open = new replyCheck.OpenReplies;
+  var div = document.querySelector('#results');
 
   function createQuestionLink(q) {
     var div = document.createElement('div');
@@ -18,6 +18,7 @@
     return div;
   }
 
+  // calling array from Object and output to console
   function searchList() {
     open._replies.map((out) => {
       console.log(out);
@@ -25,7 +26,7 @@
   }
 
   function start() {
-    console.log('start popup ' + chrome.app.getDetails().version);
+    console.log('Starting Popup ' + chrome.app.getDetails().version);
     searchList();
   }
   start();

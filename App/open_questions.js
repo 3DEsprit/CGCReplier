@@ -1,11 +1,14 @@
 (function() {
-  // reply list getter/setter
-  console.log('open loaded');
+  // background script
+  // reply list getter/setter and list
+  console.log('OpenReplies loaded');
   window.replyCheck = window.replyCheck || {};
 
+  // Adding methods and array to object
   replyCheck.OpenReplies = function() {
     this._replies = [
-      'test.html'
+      'test.html',
+      'test2.html'
     ];
   }
 
@@ -13,7 +16,6 @@
     forEach: function(cb) {
       for (var key in this._replies)
         cb(this._replies[key]);
-        console.log(this._replies);
     },
     setReply: function(replies) {
       result.appendChild(replies[r]);

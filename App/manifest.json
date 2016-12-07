@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
 
-  "name": "CGCookie ReplyChecker",
+  "name": "CGCookie 5.6 ReplyChecker",
   "description": "Find questions without answers",
   "icons": { "128": "icon.png" },
   "version": "0.36",
