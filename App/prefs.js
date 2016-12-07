@@ -5,6 +5,8 @@
 
   replyCheck.Prefs = function() {
     this._defaults = {prefs: {
+      pollTime: 15000,
+      waitTime: 15,
       blender: true,
       concept: true,
       sculpt: true,
