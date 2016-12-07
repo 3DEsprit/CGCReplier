@@ -1,18 +1,27 @@
 // background process
 (function() {
   // watch intervals and start searching
-  var mainUrl = 'https://cgcookie.com/';
-  var lessons = [
-    'course/fundamentals-of-rigging/#discussion'
-  ];
+  var searchState = 0, lastTime = 0;
+  // var search = new replyCheck.SearchUrls;
+  var NeedReplies = new replyCheck.NeedReplies;
 
-  var search = new replyCheck.SearchUrls;
-  var url = 'https://cgcookie.com/course/mesh-modeling-fundamentals/#discussion';
   var results = document.querySelector('results');
+
+  function initialCheck() {
+    NeedReplies.checkList((out) => {
+      console.log('check: ' + out);
+    });
+  }
+
+  if(lastTime === 0) {
+    console.log('startup triggered');
+    initialCheck();
+  } else {
+
+  }
 
   function start() {
     console.log('starting!');
-    checkPage();
   }
   start();
 })();

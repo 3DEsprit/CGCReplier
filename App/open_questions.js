@@ -6,10 +6,7 @@
 
   // Adding methods and array to object
   replyCheck.OpenReplies = function() {
-    this._replies = [
-      'test.html',
-      'test2.html'
-    ];
+    this._replies = [];
   }
 
   replyCheck.OpenReplies.prototype = {
