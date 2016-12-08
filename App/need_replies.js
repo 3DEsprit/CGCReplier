@@ -19,7 +19,7 @@
 
   replyCheck.NeedReplies.prototype = {
     checkList: function(cb) {
-      for(var url in this.lessons) {
+      for(var url of this.lessons) {
         var fullUrl = this.mainUrl + url + '#discussion';
         search.fetchPage(fullUrl, function(out) {
           var matches = out.match(re);
