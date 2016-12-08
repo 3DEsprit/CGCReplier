@@ -4,24 +4,26 @@
   window.replyCheck = window.replyCheck || {};
 
   replyCheck.Prefs = function() {
-    this._defaults = {prefs: {
-      pollTime: 15000,
-      waitTime: 15,
-      blender: true,
-      concept: true,
-      sculpt: true,
-      unity: true
-    }};
+    this._defaults = {
+      prefs: {
+        pollTime: 15000,
+        waitTime: 15,
+        blender: true,
+        concept: true,
+        sculpt: true,
+        unity: true
+      }
+    };
   };
 
   replyCheck.Prefs.prototype = {
     _get: function(key, cb) {
-      chrome.storage.sync.get(this._defaults, function(store) {
+      chrome.storage.sync.get(this._defaults, (store) => {
         cb(store.prefs[key]);
       });
     },
     _set: function(key, val) {
-      chrome.storage.sync.get(this._defaults, function(store) {
+      chrome.storage.sync.get(this._defaults, (store) => {
         store.prefs[key] = val;
         chrome.storage.sync.set(store);
       });

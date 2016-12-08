@@ -3,12 +3,13 @@
   // watch intervals and start searching
   var searchState = 0, lastTime = 0;
   // var search = new replyCheck.SearchUrls;
-  var NeedReplies = new replyCheck.NeedReplies;
+  var needReplies = new replyCheck.NeedReplies;
+  var prefs = new replyCheck.Prefs;
 
   var results = document.querySelector('results');
 
   function initialCheck() {
-    NeedReplies.checkList((out) => {
+    needReplies.checkList((out) => {
       console.log('check: ' + out);
     });
   }
@@ -16,8 +17,11 @@
   if(lastTime === 0) {
     console.log('startup triggered');
     initialCheck();
-  } else {
+    lastTime === prefs._defaults.prefs.waitTime;
+  }
 
+  function testStore() {
+    console.log(chrome.storage.sync);
   }
 
   function start() {
