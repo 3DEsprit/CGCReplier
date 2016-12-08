@@ -2,9 +2,10 @@
 (function() {
   // watch intervals and start searching
   var searchState = 0, lastTime = 0;
-  // var search = new replyCheck.SearchUrls;
   var needReplies = new replyCheck.NeedReplies;
   var prefs = new replyCheck.Prefs;
+  var pollTime = prefs._pollTime;
+  var waitTime = prefs._waitTime;
 
   var results = document.querySelector('results');
 
@@ -12,17 +13,30 @@
     needReplies.checkList((out) => {
       console.log('check: ' + out);
     });
+
+    chrome.runtime.sendMessage({action: 'done'}, (response) => {
+      console.log(response);
+    });
   }
 
-  if(lastTime === 0) {
-    console.log('startup triggered');
+  chrome.runtime.onStartup.addListener(() => {
+    if(lastTime === 0) {
+      console.log('startup triggered');
+      initialCheck();
+      lastTime = Date.getDate() + (prefs._waitTime * 60000);
+      console.log('lastTime');
+    }
+  });
+
+  setInterval()
+  if(lastTime) {
+
+  }
+
+  chrome.runtime.onMessage.addListener((res) => {
+    console.log(res);
     initialCheck();
-    lastTime === prefs._defaults.prefs.waitTime;
-  }
-
-  function testStore() {
-    console.log(chrome.storage.sync);
-  }
+  });
 
   function start() {
     console.log('starting!');

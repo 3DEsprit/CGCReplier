@@ -16,7 +16,6 @@
     fetchPage: function(url, cb) {
       fetch(url, {mode: 'cors'})
       .then(function(res) {
-        console.log(res);
         return res.text();
       })
       .then(function(text) {

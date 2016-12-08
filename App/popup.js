@@ -15,7 +15,6 @@
     a.src = q.url;
     div.appendChild(a);
 
-    return div;
   }
 
   // calling array from Object and output to console
@@ -25,9 +24,23 @@
     });
   }
 
+  chrome.runtime.onStartup.addListener(() => {
+    // Listen for Background to update badge
+    console.log('Popup Start', out);
+  });
+
+  chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
+    console.log('Popup Receive: ', req, sender, sendResponse);
+  });
+
+  chrome.runtime.sendMessage({action: 'run'}, (response) => {
+    console.log(response);
+  });
+
   function start() {
     console.log('Starting Popup ' + chrome.app.getDetails().version);
     searchList();
   }
+
   start();
 })();
