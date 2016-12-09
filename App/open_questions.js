@@ -1,7 +1,6 @@
 (function() {
   // background script
   // reply list getter/setter and list
-  console.log('OpenReplies loaded');
   window.replyCheck = window.replyCheck || {};
 
   // Adding methods and array to object

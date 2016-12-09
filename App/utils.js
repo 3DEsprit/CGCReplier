@@ -2,7 +2,6 @@
 // Load DOM Data
 (function() {
   // module to grab pages
-  console.log('Utils loaded');
   window.replyCheck = window.replyCheck || {};
 
   replyCheck.Utils = function() {

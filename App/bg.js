@@ -11,13 +11,12 @@
   var results = document.querySelector('results');
 
   function initialCheck() {
-    need.checkList(() => {
+    need.checkList((out) => {
       chrome.runtime.sendMessage({action: 'done'});
     });
   }
 
   function start() {
-    console.log('starting!');
     initialCheck();
   }
   start();

@@ -4,7 +4,7 @@
   console.log('Popup loaded');
 
   // call object from background here
-  var open = new replyCheck.OpenReplies;
+  // var open = replyCheck.OpenReplies;
   var need = new replyCheck.NeedReplies;
   var div = document.querySelector('#results');
 
@@ -21,8 +21,8 @@
 
   // calling array from Object and output to console
   function searchList() {
+    console.log(replyCheck.OpenReplies._replies);
     open._replies.map((out) => {
-      console.log('Reply: ' + out);
       createQuestionLink(out);
     });
   }
@@ -33,11 +33,9 @@
   });
 
   chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
-    if(req.action === 'done') console.log('received');
+    if(req.action == 'done') console.log('received');
     searchList();
   });
-
-  // chrome.runtime.sendMessage({action: 'run'});
 
   function start() {
     console.log('Starting Popup ' + chrome.app.getDetails().version);

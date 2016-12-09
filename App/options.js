@@ -2,7 +2,6 @@
 
 (function() {
   // change interval and reply list types
-  console.log('opt loaded');
   window.replyCheck = window.replyCheck || {};
 
   var prefs = replyCheck.Prefs;

@@ -1,6 +1,5 @@
 // deal with options
 (function() {
-  console.log('prefs loaded');
   window.replyCheck = window.replyCheck || {};
 
   replyCheck.Prefs = function() {
