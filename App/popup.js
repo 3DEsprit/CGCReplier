@@ -14,7 +14,6 @@
     a.target = '_blank';
     a.src = q.url;
     div.appendChild(a);
-
   }
 
   // calling array from Object and output to console
@@ -33,9 +32,7 @@
     console.log('Popup Receive: ', req, sender, sendResponse);
   });
 
-  chrome.runtime.sendMessage({action: 'run'}, (response) => {
-    console.log(response);
-  });
+  // chrome.runtime.sendMessage({action: 'run'});
 
   function start() {
     console.log('Starting Popup ' + chrome.app.getDetails().version);

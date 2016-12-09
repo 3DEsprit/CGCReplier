@@ -5,7 +5,7 @@
   var mainUrl = 'https://cgcookie.com/';
 
   var open = new replyCheck.OpenReplies;
-  var search = new replyCheck.SearchUrls;
+  var utils = new replyCheck.Utils;
   var re = /(?:discussion--item__parent)*(?:<span>)*(?:discussion--reply-count">)(\d{1})/ig;
 
   replyCheck.NeedReplies = function() {
@@ -21,7 +21,7 @@
     checkList: function(cb) {
       for(var url of this.lessons) {
         var fullUrl = this.mainUrl + url + '#discussion';
-        search.fetchPage(fullUrl, function(out) {
+        utils.fetchPage(fullUrl, function(out) {
           var matches = out.match(re);
           for(var r in matches) {
             if(matches[r].slice(-1, matches[r].length) === '0')

@@ -2,6 +2,7 @@
 (function() {
   // watch intervals and start searching
   var searchState = 0, lastTime = 0;
+  var utils = new replyCheck.
   var needReplies = new replyCheck.NeedReplies;
   var prefs = new replyCheck.Prefs;
   var pollTime = prefs._pollTime;
@@ -20,18 +21,10 @@
   }
 
   chrome.runtime.onStartup.addListener(() => {
-    if(lastTime === 0) {
-      console.log('startup triggered');
-      initialCheck();
-      lastTime = Date.getDate() + (prefs._waitTime * 60000);
-      console.log('lastTime');
-    }
+    initialCheck();
+    lastTime = Date.getDate() + (prefs._waitTime * 60000);
+    console.log('first check done, and time set');
   });
-
-  setInterval()
-  if(lastTime) {
-
-  }
 
   chrome.runtime.onMessage.addListener((res) => {
     console.log(res);
