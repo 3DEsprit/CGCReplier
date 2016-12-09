@@ -2,8 +2,8 @@
 (function() {
   // watch intervals and start searching
   var searchState = 0, lastTime = 0;
-  var utils = new replyCheck.
-  var needReplies = new replyCheck.NeedReplies;
+  var utils = new replyCheck.Utils;
+  var need = new replyCheck.NeedReplies;
   var prefs = new replyCheck.Prefs;
   var pollTime = prefs._pollTime;
   var waitTime = prefs._waitTime;
@@ -11,7 +11,7 @@
   var results = document.querySelector('results');
 
   function initialCheck() {
-    needReplies.checkList((out) => {
+    need.checkList((out) => {
       console.log('check: ' + out);
     });
 
