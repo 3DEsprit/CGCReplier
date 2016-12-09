@@ -1,25 +1,29 @@
 (function() {
   // Popup Content Script
+  var console = chrome.extension.getBackgroundPage().console;
   console.log('Popup loaded');
 
   // call object from background here
   var open = new replyCheck.OpenReplies;
+  var need = new replyCheck.NeedReplies;
   var div = document.querySelector('#results');
 
-  function createQuestionLink(q) {
-    var div = document.createElement('div');
-    div.className = 'questions';
+  function createQuestionLink(url) {
+    var link = document.createElement('div');
+    link.className = 'questions';
     var a = document.createElement('a');
     a.className = 'question';
     a.target = '_blank';
-    a.src = q.url;
+    a.src = need.mainUrl + url + '#discussion';
+    a.innerHTML = url;
     div.appendChild(a);
   }
 
   // calling array from Object and output to console
   function searchList() {
     open._replies.map((out) => {
-      console.log(out);
+      console.log('Reply: ' + out);
+      createQuestionLink(out);
     });
   }
 
@@ -29,7 +33,8 @@
   });
 
   chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
-    console.log('Popup Receive: ', req, sender, sendResponse);
+    if(req.action === 'done') console.log('received');
+    searchList();
   });
 
   // chrome.runtime.sendMessage({action: 'run'});
@@ -38,6 +43,5 @@
     console.log('Starting Popup ' + chrome.app.getDetails().version);
     searchList();
   }
-
   start();
 })();

@@ -19,7 +19,6 @@
         return res.text();
       })
       .then(function(text) {
-        console.log('Req successful');
         cb(text);
       })
       .catch(function(err){
