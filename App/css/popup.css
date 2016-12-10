@@ -9,3 +9,7 @@ body {
   overflow: hidden;
   max-width: 400px;
 }
+
+.question {
+  display: block;
+}
