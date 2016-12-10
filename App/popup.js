@@ -16,7 +16,7 @@
     var a = document.createElement('a');
     a.className = 'question';
     a.target = '_blank';
-    a.href = replyCheck.getNeedReplies().mainUrl + url + '#discussion';
+    a.href = replyCheck.getNeedReplies().mainUrl + url;
     a.innerHTML = title;
     div.appendChild(a);
     div.appendChild('<br>');
