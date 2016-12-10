@@ -5,10 +5,13 @@
 
   // call object from background here
   // var open = replyCheck.OpenReplies;
-  var div = document.querySelector('#results');
   var re = /(?:https:\/\/cgcookie.com\/course\/|lesson\/)([a-z\-]*)/i;
 
-  function createQuestionLink(url) {
+  function createQuestionLink(url, flow) {
+    var div = document.querySelector('#' + flow);
+    var flowClass = document.querySelector('.' + flow);
+    console.log(div.style.display);
+    if(div.style.display == '') div.style.display = 'block';
     var match = re.exec(url);
     var title = match[1];
     var link = document.createElement('div');
@@ -26,7 +29,7 @@
   function searchList() {
     console.log('search');
     replyCheck.getNeedReplies()._replyList.map((out) => {
-      createQuestionLink(out);
+      createQuestionLink(out, 'blender');
     });
     // console.log(replyCheck.getNeedReplies().forEach());
   }
