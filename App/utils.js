@@ -5,7 +5,7 @@
   window.replyCheck = window.replyCheck || {};
 
   replyCheck.Utils = function() {
-    this.replyCheck = ''
+    this.replyCheck = '';
   };
 
   replyCheck.Utils.prototype = {
@@ -21,15 +21,15 @@
         cb(text);
       })
       .catch(function(err){
-        console.log('Request failed', url, err);
+        console.log(url, err);
       });
     },
     timePoll(pollTime, waitTime, cb) {
-      var stopTime = newDate() + pollTime;
+      var stopTime = Date.newDate() + pollTime;
       var timeInterval = (resolve, reject) => {
         var res = cb();
         if(res) resolve(res);
-        else if(newDate() < stopTime) reject(new Error(cb));
+        else if(Date.newDate() < stopTime) reject(new Error(cb));
         else reject(new Error('Time over'));
       };
     }
