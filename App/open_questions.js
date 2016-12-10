@@ -5,16 +5,16 @@
 
   // Adding methods and array to object
   replyCheck.OpenReplies = function() {
-    this._replies = [];
+    this._replies = replyCheck.getNeedReplies()._replyList;
   }
 
   replyCheck.OpenReplies.prototype = {
     forEach: function(cb) {
-      for (var key in this._replies)
-        cb(this._replies[key]);
+      // for (var reply of need._replyList)
+        cb(this._replyList);
     },
     setReply: function(replies) {
-      result.appendChild(replies[r]);
+      // set
     },
     removeReply: function(reply) {
       // remove
