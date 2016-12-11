@@ -32,6 +32,20 @@
       }
       cb();
     },
+    checkLessons: function(arr, cb) {
+      for(var url of this.lessons) {
+        var fullUrl = mainUrl + url + '?discussion-page=1#discussion';
+        utils.fetchPage(fullUrl, function(out) {
+          var match = out.match(re);
+          for(var r in match) {
+            if(match[r].slice(-1, match[r].length) === '0')
+              console.log(arr);
+              return arr.push(fullUrl);
+          }
+        });
+      }
+      cb();
+    },
     forEach: function(cb) {
       for(var key of replyCheck.getNeedReplies()._replyList)
         cb(key);
