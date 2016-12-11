@@ -4,13 +4,14 @@
   var searchState = 0, lastTime = 0;
   var utils = new replyCheck.Utils;
   var prefs = new replyCheck.Prefs;
+  var courses = new replyCheck.Courses;
   var need = new replyCheck.NeedReplies;
+  var needFirst = replyCheck.getNeedReplies;
 
   // var results = document.querySelector('results');
 
   function grabLinks() {
-    var courses = replyCheck.getNeedReplies().courses;
-    for(var course of courses) {
+    for(var course of courses.courseList) {
       var fullUrl = need.mainUrl + course + '?discussion-page=1#discussion';
       utils.fetchPage(fullUrl, (out) => {
         // var li = querySelectorAll('li.lesson-list-item');
@@ -22,8 +23,8 @@
   }
 
   function initialCheck() {
-    replyCheck.getNeedReplies().checkList(replyCheck.getNeedReplies()._replyList, () => {
-      replyCheck.getNeedReplies().forEach((out) => {
+    needFirst().checkList(() => {
+      needFirst().forEach((out) => {
         console.log(out);
         chrome.runtime.sendMessage({action: 'done'});
       });
@@ -31,7 +32,7 @@
   }
 
   function populateLessons() {
-    if(replyCheck.getNeedReplies().lessons.length === 0) grabLinks();
+    if(needFirst().lessons.length === 0) grabLinks();
   }
 
   function start() {
