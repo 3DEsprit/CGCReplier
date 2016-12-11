@@ -23,6 +23,7 @@
     a.innerHTML = title;
     div.appendChild(a);
     div.appendChild('<br>');
+    replyCheck.getNeedReplies()._total += 1;
   }
 
   // calling array from Object and output to console
@@ -31,11 +32,10 @@
     replyCheck.getNeedReplies()._replyList.map((out) => {
       createQuestionLink(out, 'blender');
     });
-    // console.log(replyCheck.getNeedReplies().forEach());
   }
 
   chrome.runtime.onStartup.addListener((out) => {
-    // Listen for Background to update badge
+    // Grab NeedReplies _total and update badge
     console.log('Popup Start', out);
   });
 
