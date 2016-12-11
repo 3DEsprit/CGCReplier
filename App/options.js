@@ -7,13 +7,44 @@
   var prefs = replyCheck.Prefs;
 
   function start() {
-    var noteBox = document.getElementById('notifications');
-    prefs.getAlerts(function(useNotes) {
-      noteBox.checked = useNotes;
-      noteBox.addEventListener('click', function() {
-        prefs.setAlerts(noteBox.checked);
+    var blender = document.getElementById('#blender');
+    prefs.getFlow('blender', (useFlow) => {
+      blender.checked = useFlow;
+      blender.addEventListener('click', () => {
+        prefs.setFlow('blender', blender.checked);
       });
     });
-    var courseBox = document.QuerySelector('');
+
+    var concept = document.getElementById('#concept');
+    prefs.getFlow('concept', (useFlow) => {
+      concept.checked = useFlow;
+      concept.addEventListener('click', () => {
+        prefs.setFlow('concept', concept.checked);
+      });
+    });
+
+    var sculpt = document.getElementById('#sculpt');
+    prefs.getFlow('sculpt', (useFlow) => {
+      sculpt.checked = useFlow;
+      sculpt.addEventListener('click', () => {
+        prefs.setFlow('sculpt', sculpt.checked);
+      });
+    });
+
+    var unity = document.getElementById('#unity');
+    prefs.getFlow('unity', (useFlow) => {
+      unity.checked = useFlow;
+      unity.addEventListener('click', () => {
+        prefs.setFlow('unity', unity.checked);
+      });
+    });
+
+    var notifications = document.getElementById('#notifications');
+    prefs.getFlow('notifications', (useNotes) => {
+      notifications.checked = useNotes;
+      notifications.addEventListener('click', () => {
+        prefs.setFlow('notifications', notifications.checked);
+      });
+    });
   }
 })();

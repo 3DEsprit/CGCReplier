@@ -3,33 +3,35 @@
   window.replyCheck = window.replyCheck || {};
 
   replyCheck.Prefs = function() {
-    this._pollTime = 15000;
-    this._waitTime = 15;
-    this._prefs = {
-      blender: true,
-      concept: true,
-      sculpt: true,
-      unity: true
+    this._settings = {
+      options: {
+        pollTime: 15000,
+        waitTime: 15,
+        blender: true,
+        concept: true,
+        sculpt: true,
+        unity: true
+      }
     }
   };
 
   replyCheck.Prefs.prototype = {
     _get: function(key, cb) {
-      chrome.storage.sync.get(this._defaults, (store) => {
-        cb(store.prefs[key]);
+      chrome.storage.sync.get(this._settings, (store) => {
+        cb(store.options[key]);
       });
     },
     _set: function(key, val) {
-      chrome.storage.sync.get(this._defaults, (store) => {
-        store.prefs[key] = val;
+      chrome.storage.sync.get(this._settings, (store) => {
+        store.options[key] = val;
       });
     },
-    getAlerts: function(callback) {
-      this._get('use_notifications', callback);
+    getFlow: function(flowName, callback) {
+      this.get_(flowName, callback);
     },
-    setAlerts: function(use_notifications) {
-      this._set('use_notifications', use_notifications);
-    }
+    setFlow: function(flowName, flow) {
+      this.set_(flowName, flow);
+    },
   };
 
 })();
