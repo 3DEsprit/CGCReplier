@@ -1,19 +1,19 @@
 (function() {
   // Popup Content Script
   var console = chrome.extension.getBackgroundPage().console;
-  console.log('Popup loaded');
 
+  console.log('Popup loaded');
   // call object from background here
-  // var open = replyCheck.OpenReplies;
+  var needFirst = replyCheck.getNeedReplies();
   var re = /(?:https:\/\/cgcookie.com\/course\/|lesson\/)([a-z\-]*)/i;
 
   function createQuestionLink(url, flow) {
-    var div = document.querySelector('#' + flow);
+    var flowType = '#' + flow;
+    var div = document.querySelector(flowType);
     var flowClass = document.querySelector('.' + flow);
-    console.log(div.style.display);
     if(div.style.display == '') div.style.display = 'block';
     var match = re.exec(url);
-    var title = match[1];
+    var title = match[1].toUpperCase().replace(/\-/gi, ' ');
     var link = document.createElement('div');
     link.className = 'questions';
     var a = document.createElement('a');
@@ -22,14 +22,14 @@
     a.href = replyCheck.getNeedReplies().mainUrl + url;
     a.innerHTML = title;
     div.appendChild(a);
-    div.appendChild('<br>');
-    replyCheck.getNeedReplies()._total += 1;
+    needFirst._total += 1;
   }
 
   // calling array from Object and output to console
   function searchList() {
-    console.log('search');
-    replyCheck.getNeedReplies()._replyList.map((out) => {
+    console.log('search', needFirst._replyList);
+    needFirst._replyList.map((out) => {
+      console.log(out);
       createQuestionLink(out, 'blender');
     });
   }
