@@ -32,28 +32,17 @@
       }
       cb();
     },
-    setReply: function(reply) {
-      console.log('set');
-    },
-    removeReply: function(reply) {
-      console.log('remove');
-    },
-    findLesson: function(url) {
-      console.log('lessons');
-      // li lesson-list-item > child a
-    },
     forEach: function(cb) {
       for(var key of replyCheck.getNeedReplies()._replyList)
         cb(key);
     }
   };
 
+  // make single instance for extension
   replyCheck.getNeedReplies = function() {
     var background = chrome.extension.getBackgroundPage();
-    console.log('background: ', background);
     if (!background.replyCheck.hasOwnProperty("needReplies"))
       background.replyCheck.needReplies = new replyCheck.NeedReplies;
-
     return background.replyCheck.needReplies;
   };
 })();
