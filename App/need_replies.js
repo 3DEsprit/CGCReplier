@@ -3,45 +3,43 @@
   window.replyCheck = window.replyCheck || {};
   var mainUrl = 'https://cgcookie.com/';
   var utils = new replyCheck.Utils;
+  var courses = new replyCheck.Courses;
   var re = /(?:discussion--item__parent)*(?:<span>)*(?:discussion--reply-count">)(\d{1})/ig;
 
   replyCheck.NeedReplies = function() {
     this._total = 0;
     this._replyList = [];
     this.mainUrl = 'https://cgcookie.com/';
-    this.courses = [
-      'course/fundamentals-of-rigging/',
-      'course/fundamentals-of-lighting/',
-      'course/fundamentals-of-animation/'
-    ],
     this.lessons = [];
   };
 
   replyCheck.NeedReplies.prototype = {
-    checkList: function(arr, cb) {
-      for(var url of this.courses) {
-        var fullUrl = mainUrl + url + '?discussion-page=1#discussion';
-        utils.fetchPage(fullUrl, function(out) {
-          var match = out.match(re);
-          for(var r in match) {
-            if(match[r].slice(-1, match[r].length) === '0')
-              console.log(arr);
-              return arr.push(fullUrl);
+    checkList: function(cb) {
+      replyCheck.getNeedReplies()._replyList = [];
+      for(let url of courses.courseList) {
+        let fullUrl = mainUrl + url + '?discussion-page=1#discussion';
+        utils.fetchPage(fullUrl, (out) => {
+          let match = out.match(re);
+          var matchTotal = 0;
+          for(let r in match) {
+            if(match[r].slice(-1, match[r].length) === '0') matchTotal += 1;
           }
+          if(matchTotal > 0) replyCheck.getNeedReplies()._replyList.push(fullUrl);
         });
       }
       cb();
     },
-    checkLessons: function(arr, cb) {
-      for(var url of this.lessons) {
-        var fullUrl = mainUrl + url + '?discussion-page=1#discussion';
-        utils.fetchPage(fullUrl, function(out) {
-          var match = out.match(re);
-          for(var r in match) {
-            if(match[r].slice(-1, match[r].length) === '0')
-              console.log(arr);
-              return arr.push(fullUrl);
+    checkLesson: function(cb) {
+      // replyCheck.getNeedReplies()._replyList = [];
+      for(let url of courses.courseList) {
+        let fullUrl = mainUrl + url + '?discussion-page=1#discussion';
+        utils.fetchPage(fullUrl, (out) => {
+          let match = out.match(re);
+          var matchTotal = 0;
+          for(let r in match) {
+            if(match[r].slice(-1, match[r].length) === '0') matchTotal += 1;
           }
+          if(matchTotal > 0) replyCheck.getNeedReplies()._replyList.push(fullUrl);
         });
       }
       cb();
