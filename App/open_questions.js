@@ -11,7 +11,7 @@
   replyCheck.OpenReplies.prototype = {
     forEach: function(cb) {
       // for (var reply of need._replyList)
-        cb(this._replyList);
+        cb();
     },
     setReply: function(replies) {
       // set
