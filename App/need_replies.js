@@ -4,7 +4,7 @@
   var mainUrl = 'https://cgcookie.com/';
   var utils = new replyCheck.Utils;
   var courses = new replyCheck.Courses;
-  var re = /(?:discussion--item__parent)*(?:<span>)*(?:discussion--reply-count">)(\d{1})/ig;
+  var re = /(?:discussion--item__parent)[^]*?(?:<span class="discussion--reply-count">)(\d{1})/ig;
 
   replyCheck.NeedReplies = function() {
     this._total = 0;
