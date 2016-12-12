@@ -4,7 +4,7 @@
   var searchState = 0, lastTime = 0;
   var utils = new replyCheck.Utils;
   var prefs = new replyCheck.Prefs;
-  var courseFirst = replyCheck.openCourses;
+  var courseFirst = replyCheck.getCourses;
   var courses = new replyCheck.Courses;
   var needFirst = replyCheck.getNeedReplies;
   var need = new replyCheck.NeedReplies;
@@ -17,8 +17,7 @@
         let match = out.match(re);
         for(let m of match) {
           var url = /lesson\/[a-z\-]*?\//ig;
-          courseFirst[flow].push(m.match(url));
-          console.log(courseFirst[flow]);
+          courseFirst()[flow + 'Lesson'].push(m.match(url).toString());
         }
       });
     }
@@ -32,7 +31,7 @@
     });
   }
   function populateLessons(flow) {
-    if(needFirst().lessons[flow].length === 0) grabLinks(flow);
+    if(courseFirst()[flow + 'Lesson'].length === 0) grabLinks(flow);
   }
   function start() {
     populateLessons('Blender');
