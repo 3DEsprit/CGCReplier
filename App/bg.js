@@ -10,8 +10,8 @@
 
   // var results = document.querySelector('results');
 
-  function grabLinks() {
-    for(var course of courses.courseList) {
+  function grabLinks(flow) {
+    for(var course of courses[flow]) {
       var fullUrl = need.mainUrl + course + '?discussion-page=1#discussion';
       utils.fetchPage(fullUrl, (out) => {
         // var li = querySelectorAll('li.lesson-list-item');
@@ -32,7 +32,7 @@
   }
 
   function populateLessons() {
-    if(needFirst().lessons.length === 0) grabLinks();
+    if(needFirst().lessons.length === 0) grabLinks('courseList');
   }
 
   function start() {
