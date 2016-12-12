@@ -8,14 +8,14 @@
 
   replyCheck.NeedReplies = function() {
     this._total = 0;
-    this._replyList = [];
+    this._questionList = [];
     this.mainUrl = 'https://cgcookie.com/';
     this.lessons = [];
   };
 
   replyCheck.NeedReplies.prototype = {
     checkList: function(cb) {
-      replyCheck.getNeedReplies()._replyList = [];
+      replyCheck.getNeedReplies()._questionList = [];
       for(let url of courses.courseList) {
         let fullUrl = mainUrl + url + '?discussion-page=1#discussion';
         utils.fetchPage(fullUrl, (out) => {
@@ -24,14 +24,14 @@
           for(let r in match) {
             if(match[r].slice(-1, match[r].length) === '0') matchTotal += 1;
           }
-          if(matchTotal > 0) replyCheck.getNeedReplies()._replyList.push(fullUrl);
+          if(matchTotal > 0) replyCheck.getNeedReplies()._questionList.push(fullUrl);
         });
       }
       cb();
     },
-    checkLesson: function(cb) {
-      // replyCheck.getNeedReplies()._replyList = [];
-      for(let url of courses.courseList) {
+    checkLesson: function(flow, cb) {
+      // replyCheck.getNeedReplies()._questionList = [];
+      for(let url of courses.courseList[flow]) {
         let fullUrl = mainUrl + url + '?discussion-page=1#discussion';
         utils.fetchPage(fullUrl, (out) => {
           let match = out.match(re);
@@ -39,13 +39,13 @@
           for(let r in match) {
             if(match[r].slice(-1, match[r].length) === '0') matchTotal += 1;
           }
-          if(matchTotal > 0) replyCheck.getNeedReplies()._replyList.push(fullUrl);
+          if(matchTotal > 0) replyCheck.getNeedReplies()._questionList.push(fullUrl);
         });
       }
       cb();
     },
     forEach: function(cb) {
-      for(var key of replyCheck.getNeedReplies()._replyList)
+      for(var key of replyCheck.getNeedReplies()._questionList)
         cb(key);
     }
   };
