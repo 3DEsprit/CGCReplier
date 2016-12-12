@@ -27,9 +27,7 @@
 
   // calling array from Object and output to console
   function searchList() {
-    console.log('search', needFirst._replyList);
     needFirst._replyList.map((out) => {
-      console.log(out);
       createQuestionLink(out, 'blender');
     });
   }
