@@ -34,4 +34,11 @@
       // find?
     }
   };
+
+  replyCheck.getCourses = function() {
+    var background = chrome.extension.getBackgroundPage();
+    if (!background.replyCheck.hasOwnProperty("openCourses"))
+      background.replyCheck.openCourses = new replyCheck.Courses;
+    return background.replyCheck.openCourses;
+  };
 })();
