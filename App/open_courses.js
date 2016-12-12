@@ -5,7 +5,7 @@
 
   // Adding methods and array to object
   replyCheck.Courses = function() {
-    this.courseList = [
+    this.Blender = [
         'course/blender-basics/', 'course/mesh-modeling-fundamentals/',
         'course/introduction-to-texturing/', 'course/shading-fundamentals-in-cycles/',
         'course/fundamentals-of-rigging/', 'course/fundamentals-of-animation/',

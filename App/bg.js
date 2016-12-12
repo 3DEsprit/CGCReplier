@@ -23,7 +23,7 @@
   }
 
   function initialCheck() {
-    needFirst().checkList('courseList', () => {
+    needFirst().checkList('Blender', () => {
       needFirst().forEach((out) => {
         console.log(out);
         chrome.runtime.sendMessage({action: 'done'});
@@ -32,7 +32,7 @@
   }
 
   function populateLessons() {
-    if(needFirst().lessons.length === 0) grabLinks('courseList');
+    if(needFirst().lessons.length === 0) grabLinks('Blender');
   }
 
   function start() {
