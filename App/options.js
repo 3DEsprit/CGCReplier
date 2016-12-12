@@ -14,7 +14,6 @@
         prefs.setFlow('blender', blender.checked);
       });
     });
-
     var concept = document.getElementById('#concept');
     prefs.getFlow('concept', (useFlow) => {
       concept.checked = useFlow;
@@ -22,7 +21,6 @@
         prefs.setFlow('concept', concept.checked);
       });
     });
-
     var sculpt = document.getElementById('#sculpt');
     prefs.getFlow('sculpt', (useFlow) => {
       sculpt.checked = useFlow;
@@ -30,7 +28,6 @@
         prefs.setFlow('sculpt', sculpt.checked);
       });
     });
-
     var unity = document.getElementById('#unity');
     prefs.getFlow('unity', (useFlow) => {
       unity.checked = useFlow;
@@ -38,13 +35,11 @@
         prefs.setFlow('unity', unity.checked);
       });
     });
+    var notif = document.getElementById('#notifications', () => {
 
-    var notifications = document.getElementById('#notifications');
-    prefs.getFlow('notifications', (useNotes) => {
-      notifications.checked = useNotes;
-      notifications.addEventListener('click', () => {
-        prefs.setFlow('notifications', notifications.checked);
-      });
+    });
+    var waitTime = document.getElementById('', () => {
+
     });
   }
 })();
