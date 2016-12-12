@@ -8,8 +8,7 @@
   var re = /(?:https:\/\/cgcookie.com\/course\/|lesson\/)([a-z\-]*)/i;
 
   function createQuestionLink(url, flow) {
-    var div = document.querySelector('#' + flow);
-    var flowClass = document.querySelector('.' + flow);
+    var div = document.querySelector('.' + flow);
     if(div.style.display == '') div.style.display = 'block';
     var match = re.exec(url);
     var title = match[1].toUpperCase().replace(/\-/gi, ' ');
