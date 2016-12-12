@@ -17,6 +17,10 @@
     this.Concept = [];
     this.Sculpt = [];
     this.Unity = [];
+    this.BlenderLesson = [];
+    this.ConceptLesson = [];
+    this.SculptLesson = [];
+    this.UnityLesson = [];
   };
 
   replyCheck.Courses.prototype = {
