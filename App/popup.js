@@ -9,7 +9,8 @@
 
   function createQuestionLink(url, flow) {
     var flowType = '#' + flow;
-    var div = document.querySelector(flowType);
+    var div = document.querySelector('#' + flow);
+    console.log(div.style);
     var flowClass = document.querySelector('.' + flow);
     if(div.style.display == '') div.style.display = 'block';
     var match = re.exec(url);
