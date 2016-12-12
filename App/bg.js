@@ -23,7 +23,7 @@
   }
 
   function initialCheck() {
-    needFirst().checkList(() => {
+    needFirst().checkList('courseList', () => {
       needFirst().forEach((out) => {
         console.log(out);
         chrome.runtime.sendMessage({action: 'done'});

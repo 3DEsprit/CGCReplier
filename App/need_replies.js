@@ -14,9 +14,9 @@
   };
 
   replyCheck.NeedReplies.prototype = {
-    checkList: function(cb) {
+    checkList: function(flow, cb) {
       replyCheck.getNeedReplies()._questionList = [];
-      for(let url of courses.courseList) {
+      for(let url of courses[flow]) {
         let fullUrl = mainUrl + url + '?discussion-page=1#discussion';
         utils.fetchPage(fullUrl, (out) => {
           let match = out.match(re);
