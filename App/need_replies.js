@@ -17,23 +17,23 @@
   replyCheck.NeedReplies.prototype = {
     checkList: function(flow, cb) {
       // replyCheck.getNeedReplies()._questionList = [];
-      for(let url of courses[flow]) {
+      courses[flow].map((url) => {
         let fullUrl = mainUrl + url + '?discussion-page=1#discussion';
         utils.fetchPage(fullUrl, (out) => {
           let match = out.match(re);
           var matchTotal = 0;
-          for(let r in match) {
-            if(match[r].slice(-1, match[r].length) === '0') matchTotal += 1;
-          }
+          match.map((r) => {
+            if(r.slice(-1, r.length) === '0') matchTotal += 1;
+          });
           if(matchTotal > 0) replyCheck.getNeedReplies()._questionList.push(fullUrl);
           this._total += 1;
         });
-      }
+      });
       cb();
     },
-    checkLesson: function(flow, cb) {
+    checkLesson: function(flow) {
+      console.log('check lessons');
       for(let url of courseList()[flow + 'Lesson']) {
-        console.log(url);
         let fullUrl = mainUrl + url + '?discussion-page=1#discussion';
         utils.fetchPage(fullUrl, (out) => {
           let match = out.match(re);
@@ -45,7 +45,6 @@
           this._total += 1;
         });
       }
-      cb();
     },
     forEach: function(cb) {
       for(var key of replyCheck.getNeedReplies()._questionList)
