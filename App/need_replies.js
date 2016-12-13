@@ -4,6 +4,7 @@
   var mainUrl = 'https://cgcookie.com/';
   var utils = new replyCheck.Utils;
   var courses = new replyCheck.Courses;
+  var courseList = replyCheck.getCourses;
   var re = /(?:discussion--item__parent)[^]*?(?:<span class="discussion--reply-count">)(\d{1})/ig;
 
   replyCheck.NeedReplies = function() {
@@ -25,13 +26,14 @@
             if(match[r].slice(-1, match[r].length) === '0') matchTotal += 1;
           }
           if(matchTotal > 0) replyCheck.getNeedReplies()._questionList.push(fullUrl);
+          this._total += 1;
         });
       }
       cb();
     },
     checkLesson: function(flow, cb) {
       // replyCheck.getNeedReplies()._questionList = [];
-      for(let url of courses.courseList[flow]) {
+      for(let url of coursesList[flow + 'lesson']) {
         let fullUrl = mainUrl + url + '?discussion-page=1#discussion';
         utils.fetchPage(fullUrl, (out) => {
           let match = out.match(re);
@@ -40,13 +42,10 @@
             if(match[r].slice(-1, match[r].length) === '0') matchTotal += 1;
           }
           if(matchTotal > 0) replyCheck.getNeedReplies()._questionList.push(fullUrl);
+          this._total += 1;
         });
       }
       cb();
-    },
-    forEach: function(cb) {
-      for(var key of replyCheck.getNeedReplies()._questionList)
-        cb(key);
     }
   };
 
