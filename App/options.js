@@ -2,44 +2,54 @@
 
 (function() {
   // change interval and reply list types
+  var console = chrome.extension.getBackgroundPage().console;
   window.replyCheck = window.replyCheck || {};
 
-  var prefs = replyCheck.Prefs;
+  var prefs = new replyCheck.Prefs;
 
   function start() {
-    var blender = document.getElementById('#blender');
-    prefs.getFlow('blender', (useFlow) => {
+    var blender = document.getElementById('blenderBox');
+    prefs._get('blender', (useFlow) => {
       blender.checked = useFlow;
       blender.addEventListener('click', () => {
-        prefs.setFlow('blender', blender.checked);
+        prefs._set('blender', blender.checked);
       });
     });
-    var concept = document.getElementById('#concept');
-    prefs.getFlow('concept', (useFlow) => {
+    var concept = document.getElementById('conceptBox');
+    prefs._get('concept', (useFlow) => {
       concept.checked = useFlow;
       concept.addEventListener('click', () => {
-        prefs.setFlow('concept', concept.checked);
+        prefs._set('concept', concept.checked);
       });
     });
-    var sculpt = document.getElementById('#sculpt');
-    prefs.getFlow('sculpt', (useFlow) => {
+    var sculpt = document.getElementById('sculptBox');
+    prefs._get('sculpt', (useFlow) => {
       sculpt.checked = useFlow;
       sculpt.addEventListener('click', () => {
-        prefs.setFlow('sculpt', sculpt.checked);
+        prefs._set('sculpt', sculpt.checked);
       });
     });
-    var unity = document.getElementById('#unity');
-    prefs.getFlow('unity', (useFlow) => {
+    var unity = document.getElementById('unityBox');
+    prefs._get('unity', (useFlow) => {
       unity.checked = useFlow;
       unity.addEventListener('click', () => {
-        prefs.setFlow('unity', unity.checked);
+        prefs._set('unity', unity.checked);
       });
     });
-    var notif = document.getElementById('#notifications', () => {
-
+    var notif = document.getElementById('notifications');
+    prefs._get('notifications', (notes) => {
+      notif.checked = notes;
+      notif.addEventListener('click', () => {
+        prefs._set('notifications', notif.checked);
+      });
     });
-    var waitTime = document.getElementById('', () => {
-
+    var waitTime = document.getElementById('timer');
+    prefs._get('waitTime', (timer) => {
+      waitTime.value = timer;
+      waitTime.addEventListener('change', () => {
+        prefs._set('waitTime', waitTime.value);
+      });
     });
   }
+  start();
 })();
