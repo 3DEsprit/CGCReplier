@@ -3,8 +3,8 @@
   window.replyCheck = window.replyCheck || {};
   var mainUrl = 'https://cgcookie.com/';
   var utils = new replyCheck.Utils;
-  var courses = new replyCheck.Courses;
   var courseList = replyCheck.getCourses;
+  var courses = new replyCheck.Courses;
   var re = /(?:discussion--item__parent)[^]*?(?:<span class="discussion--reply-count">)(\d{1})/ig;
 
   replyCheck.NeedReplies = function() {
@@ -16,7 +16,7 @@
 
   replyCheck.NeedReplies.prototype = {
     checkList: function(flow, cb) {
-      replyCheck.getNeedReplies()._questionList = [];
+      // replyCheck.getNeedReplies()._questionList = [];
       for(let url of courses[flow]) {
         let fullUrl = mainUrl + url + '?discussion-page=1#discussion';
         utils.fetchPage(fullUrl, (out) => {
@@ -32,8 +32,8 @@
       cb();
     },
     checkLesson: function(flow, cb) {
-      // replyCheck.getNeedReplies()._questionList = [];
-      for(let url of coursesList[flow + 'lesson']) {
+      for(let url of courseList()[flow + 'Lesson']) {
+        console.log(url);
         let fullUrl = mainUrl + url + '?discussion-page=1#discussion';
         utils.fetchPage(fullUrl, (out) => {
           let match = out.match(re);

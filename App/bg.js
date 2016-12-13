@@ -19,28 +19,33 @@
         for(let m of match) {
           var url = /lesson\/[a-z\-]*?\//ig;
           courseFirst()[flow + 'Lesson'].push(m.match(url).toString());
+          console.log(courseFirst()[flow + 'Lesson'].length);
         }
       });
     }
     cb();
   }
 
-  function initialCheck() {
-    needFirst().checkList('Blender', () => {
-      needFirst().forEach((out) => {
-        populateLessons('Blender');
-          console.log(courseFirst.BlenderLesson);
+  function initialCheck(flow) {
+    console.log(courseFirst().BlenderLesson);
+    console.log(needFirst()._questionList);
+    needFirst().checkList(flow, () => {
+      console.log('courses checked');
+      needFirst().checkLesson(flow, () => {
+        console.log('lessons checked');
+        needFirst().forEach(() => {
+          console.log('cycling through list');
+          badgeUpdate();
+        });
       });
     });
   }
 
   function populateLessons(flow, cb) {
-    console.log(courseFirst().BlenderLesson);
-    if(courseFirst()[flow + 'Lesson'].length === 0) grabLinks(flow, () => {
-      needFirst().checkLesson(flow, () => {
-        badgeUpdate();
-      });
+    if(courseFirst()[flow + 'Lesson'].length == 0) grabLinks(flow, (out) => {
+      return out;
     });
+    cb();
   }
 
   function badgeUpdate() {
@@ -71,7 +76,9 @@
   }
 
   function start() {
-    initialCheck();
+    populateLessons('Blender', (out) => {
+      initialCheck('Blender');
+    });
   }
   start();
 })();
