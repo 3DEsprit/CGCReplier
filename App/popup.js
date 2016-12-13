@@ -28,6 +28,7 @@
     needFirst._questionList.map((out) => {
       createQuestionLink(out, 'Blender');
     });
+    needFirst._questionList = [];
   }
 
   chrome.runtime.onStartup.addListener((out) => {

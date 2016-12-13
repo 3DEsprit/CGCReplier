@@ -46,6 +46,10 @@
         });
       }
       cb();
+    },
+    forEach: function(cb) {
+      for(var key of replyCheck.getNeedReplies()._questionList)
+        cb(key);
     }
   };
 
