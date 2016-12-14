@@ -6,8 +6,9 @@
   // call object from background here
   var needFirst = replyCheck.getNeedReplies();
   var re = /(?:https:\/\/cgcookie.com\/course\/|lesson\/)([a-z\-]*)/i;
+  var questions = 0;
 
-  function createQuestionLink(url, flow) {
+  function createQuestionLink(url, flow, cb) {
     var div = document.querySelector('.' + flow);
     if(div.style.display == '') div.style.display = 'block';
     var match = re.exec(url);
@@ -21,13 +22,16 @@
     a.innerHTML = title;
     div.appendChild(a);
     needFirst._total += 1;
+    cb('done');
   }
 
   // calling array from Object and output to console
-  function searchList() {
-    needFirst._questionList.map((out) => {
-      createQuestionLink(out, 'Blender');
-    });
+  function searchList(flow, cb) {
+    for(let n of needFirst._questionList[flow]) {
+      createQuestionLink(n, 'Blender');
+      questions++;
+      if(questions == needFirst._questionList[flow].length) cb('done');
+    }
     // needFirst._questionList = [];
   }
 
@@ -38,12 +42,16 @@
 
   chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
     if(req.action == 'done') console.log('received');
-    searchList();
+    searchList('Blender', (out) => {
+      console.log(out);
+    });
   });
 
   function start() {
     console.log('Starting Popup ' + chrome.app.getDetails().version);
-    searchList();
+    searchList('Blender', (out) => {
+      console.log(out);
+    });
   }
   start();
 })();
