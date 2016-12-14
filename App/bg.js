@@ -1,7 +1,7 @@
 // background process
 (function() {
   // watch intervals and start searching
-  var nextTime, lastTime, waitTime = 0, pollTime = 15000, message, status, links = 0, checkTime, topics = [];
+  var nextTime, lastTime, waitTime = 0, pollTime = 15000, message, status, links = 0, checkTime, topicArray = [];
   var topicList = ['Blender', 'Concept', 'Sculpt', 'Unity'];
   var utils = new replyCheck.Utils;
   var prefs = new replyCheck.Prefs;
@@ -72,7 +72,7 @@
     prefs._get('notifications', (store) => {
       status = store;
       console.log('Status: ' + status);
-      if(status) {
+      if(status && nextTime) {
         if(needFirst._total > 0) {
           message = ' questions unanswered on the site right now.';
         } else {
@@ -99,29 +99,26 @@
 
   function prefCheck(cb) {
     var iteration = 0;
-    for(var topic of topicList) {
-      console.log('Checking ' + topic);
-      prefs.checkSettings();
+    for(let topic of topicList) {
       prefs._get(topic, (store) => {
         iteration++;
-        if(topic) topics.push(store);
-        if(iteration === topicList.length) cb(topics);
+        if(store) topicArray.push(topic);
+        if(iteration === topicList.length) cb(topicArray);
       });
     }
   }
 
   function checkQuestions() {
-    prefCheck((topics) => {
-      console.log('Check done: ' + topics);
-      for(let n of topics) {
-        if(topics.indexOf(n)) {
-          console.log('Fire ' + n);
-          if(n === topics[topics.length - 1]) {
-            console.log('end of array');
+    prefCheck((topicArray) => {
+      var count = 0;
+      for(let flow of topicArray) {
+        count++;
+        initialCheck(flow, () => {
+          if(count === topicArray.length) {
             addTime(waitTime);
             statusUpdate();
           }
-        }
+        });
       }
     });
   }
