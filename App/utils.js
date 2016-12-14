@@ -14,13 +14,13 @@
     },
     fetchPage: function(url, cb) {
       fetch(url, {mode: 'cors'})
-      .then(function(res) {
+      .then((res) => {
         return res.text();
       })
-      .then(function(text) {
+      .then((text) => {
         cb(text);
       })
-      .catch(function(err){
+      .catch((err) => {
         console.log(url, err);
       });
     },
