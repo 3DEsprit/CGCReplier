@@ -1,14 +1,13 @@
 // background process
 (function() {
   // watch intervals and start searching
-  var searchState = 0, lastTime = 0, message, status, links = 0;
+  var lastTime = 0, waitTime = 0, pollTime = 15000, message, status, links = 0;
   var utils = new replyCheck.Utils;
   var prefs = new replyCheck.Prefs;
-  var courseFirst = replyCheck.getCourses;
+  var courseFirst = replyCheck.getCourses();
   var courses = new replyCheck.Courses;
-  var needFirst = replyCheck.getNeedReplies;
+  var needFirst = replyCheck.getNeedReplies();
   var need = new replyCheck.NeedReplies;
-  var total = needFirst._total;
 
   function grabLinks(flow, cb) {
     console.log('grab Links');
@@ -19,7 +18,7 @@
         let match = out.match(re);
         match.map((m) => {
           var url = /lesson\/[a-z\-]*?\//ig;
-          courseFirst()[flow + 'Lesson'].push(m.match(url).toString());
+          courseFirst[flow + 'Lesson'].push(m.match(url).toString());
           links++;
           if(links === courses[flow].length) cb('gotLinks');
         });
@@ -28,75 +27,113 @@
   }
 
   function checkFlow(flow, cb) {
-    console.log('Courses');
-    needFirst().checkList(flow, (out) => {
-      console.log('CheckFlow: ' + out);
-      cb('checkFlow done');
+    needFirst.checkList(flow, () => {
+      cb();
     });
   }
 
   function checkLessons(flow, cb) {
     console.log('Lessons');
-    needFirst().checkLesson(flow, (out) => {
-      console.log('CheckLesson: ' + out);
-      cb('checkLessons done');
+    needFirst.checkLesson(flow, () => {
+      cb();
     });
   }
 
   function populateLessons(flow, cb) {
-    if(courseFirst()[flow + 'Lesson'].length == 0) grabLinks(flow, (out) => {
-      console.log('GrabLinks: ' + out);
-      cb('grabLinks done');
+    if(courseFirst[flow + 'Lesson'].length == 0) grabLinks(flow, (out) => {
+      cb();
     });
   }
 
   function cycleQuestions() {
-    needFirst().forEach(() => {
+    needFirst.forEach(() => {
       console.log('cycling through list');
     });
   }
 
   function badgeUpdate() {
-    console.log('Update badge ');
-    prefs._get('notifications', (store) => {
-      status = store;
-    });
-    if(status) {
-      chrome.browserAction.setBadgeText({text: total});
-      if(total == 0) {
-        chrome.browserAction.setBadgeBackgroundColor({color: [255,0,0,255]});
-      } else {
-        chrome.browserAction.setBadgeBackgroundColor({color: [0,225,0,255]});
-      }
+    if(!needFirst._total || needFirst._total === 0) {
+      chrome.browserAction.setBadgeText({text: '0'});
+    } else if (needFirst._total > 99) {
+      chrome.browserAction.setBadgeText({text: '99+'});
+    } else {
+      chrome.browserAction.setBadgeText({text: needFirst._total.toString()});
+    }
+    if(needFirst._total !== 0) {
+      chrome.browserAction.setBadgeBackgroundColor({color: [185,0,0,255]});
+    } else {
+      chrome.browserAction.setBadgeBackgroundColor({color: [125,125,225,255]});
     }
   }
 
   function statusUpdate() {
-    if(total > 0) {
-      message = ' questions unanswered on the site right now.';
-    } else {
-      message = ' messages! Relax, and enjoy a cup of coffee.'
-    }
-    chrome.notifications.create('basic', {
-      icon: chrome.extension.getURL('icon.png'),
-      body: total + message
+    prefs._get('notifications', (store) => {
+      status = store;
     });
+    console.log('Status: ' + status);
+    if(status) {
+      if(total > 0) {
+        message = ' questions unanswered on the site right now.';
+      } else {
+        message = ' messages! Relax, and enjoy a cup of coffee.'
+      }
+      chrome.notifications.create('basic', {
+        icon: chrome.extension.getURL('icon.png'),
+        body: needFirst._total + message
+      });
+    }
   }
 
   function initialCheck(flow) {
-    populateLessons(flow, (out) => {
-      console.log(out);
-      checkFlow(flow, (out) => {
-        console.log(out);
-        checkLessons(flow, (out) => {
-          console.log(out);
+    populateLessons(flow, () => {
+      checkFlow(flow, () => {
+        checkLessons(flow, () => {
+          badgeUpdate();
         });
       });
     });
   }
 
+  function checkQuestions() {
+    // initialCheck('Blender');
+    addTime(waitTime);
+  }
+
+  function addTime(time) {
+    var date = new Date();
+    lastTime = date.setMinutes(date.getMinutes() + time);
+    console.log('Lasttime: ' + lastTime, 'Time: ' + date);
+  }
+
+  function updateList() {
+    console.log('updating list');
+
+    var oldTime = waitTime;
+    prefs._get('waitTime', (store) => {
+      waitTime = store;
+    });
+
+    if(waitTime !== oldTime) {
+      console.log('reset interval');
+      // checkQuestions();
+      addTime(waitTime);
+    }
+
+    console.log(' Wait: ' + waitTime + ' Time: ' + Date.now() +
+      ' Last: ' + lastTime);
+
+    if(lastTime === 0) {
+      checkQuestions();
+    } else if(lastTime >= Date.now()) {
+      checkQuestions();
+      addTime(waitTime);
+    }
+  }
+
+  var checkTime = setInterval(updateList, pollTime);
+
   function start() {
-    initialCheck('Blender');
+    updateList();
   }
   start();
 })();
