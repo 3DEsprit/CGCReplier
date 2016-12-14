@@ -1,8 +1,7 @@
 // background process
 (function() {
   // watch intervals and start searching
-  var nextTime, lastTime, waitTime = 0, pollTime = 15000, message, status, links = 0, checkTime, topicArray = [];
-  var topicList = ['Blender', 'Concept', 'Sculpt', 'Unity'];
+  var nextTime, lastTime, waitTime = 0, pollTime = 15000, message, status, links = 0, checkTime;
   var utils = new replyCheck.Utils;
   var prefs = new replyCheck.Prefs;
   var courseFirst = replyCheck.getCourses();
@@ -74,67 +73,66 @@
       console.log('Status: ' + status);
       if(status && nextTime) {
         if(needFirst._total > 0) {
-          message = ' questions unanswered on the site right now.';
-        } else {
-          message = ' messages! Relax, and enjoy a cup of coffee.';
+          var notification = new Notification('CGCookie Questions', {
+            icon: chrome.extension.getURL('icon.png'),
+            body: needFirst._total + message
+          });
         }
-        var notification = new Notification('CGCookie Questions', {
-          icon: chrome.extension.getURL('icon.png'),
-          body: needFirst._total + message
-        });
       }
     });
   }
 
   function initialCheck(flow, cb) {
-    populateLessons(flow, () => {
-      checkFlow(flow, () => {
-        checkLessons(flow, () => {
-          badgeUpdate();
-          cb();
+    prefs._get(flow, (store) => {
+      if(store) {
+        console.log('Checking ' + flow);
+        populateLessons(flow, () => {
+          checkFlow(flow, () => {
+            checkLessons(flow, () => {
+              badgeUpdate();
+              cb(true);
+            });
+          });
         });
-      });
+      } else {
+        cb(true);
+      }
     });
   }
 
-  function prefCheck(cb) {
-    var iteration = 0;
-    for(let topic of topicList) {
-      prefs._get(topic, (store) => {
-        iteration++;
-        if(store) topicArray.push(topic);
-        if(iteration === topicList.length) cb(topicArray);
-      });
-    }
-  }
-
   function checkQuestions() {
-    prefCheck((topicArray) => {
-      var count = 0;
-      for(let flow of topicArray) {
-        count++;
-        initialCheck(flow, () => {
-          if(count === topicArray.length) {
-            addTime(waitTime);
-            statusUpdate();
-          }
+    initialCheck('Blender', (done) => {
+      if (done)
+        console.log('Blender done!');
+        initialCheck('Concept', (done) => {
+        if (done)
+          console.log('Concept done!')
+          initialCheck('Sculpt', (done) => {
+          if (done)
+            console.log('Sculpt done!')
+            initialCheck('Unity', (done) => {
+            if (done) {
+              console.log('Unity done! All done!');
+              // addTime(waitTime);
+              // statusUpdate();
+            }
+          });
         });
-      }
+      });
     });
   }
 
   function addTime(time) {
     lastTime = new Date();
     nextTime = lastTime.getTime() + time * 60000;
-    console.log('Current Time: ' + Date.now(), ' Next Time: ' + nextTime);
   }
 
   function updateList() {
     let oldTime = waitTime;
     prefs._get('waitTime', (store) => {
       waitTime = store;
+      if(waitTime === 0) waitTime = 15;
       if(waitTime !== oldTime) {
-        console.log('reset interval');
         clearInterval(checkTime);
         checkTime = setInterval(updateList, pollTime);
         console.log('Reset: updating list');
@@ -143,9 +141,6 @@
     });
 
     if(nextTime !== undefined) {
-      console.log(' Wait: ' + waitTime + ' Time: ' + Date.now() +
-        ' Next: ' + nextTime);
-
       if(Date.now() >= nextTime) {
         console.log('Timeout: updating list');
         checkQuestions();
