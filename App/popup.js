@@ -8,7 +8,7 @@
   var re = /(?:https:\/\/cgcookie.com\/course\/|lesson\/)([a-z\-]*)/i;
   var questions = 0;
 
-  function createQuestionLink(url, flow, cb) {
+  function createQuestionLink(url, flow) {
     var div = document.querySelector('.' + flow);
     if(div.style.display == '') div.style.display = 'block';
     var match = re.exec(url);
@@ -22,13 +22,12 @@
     a.innerHTML = title;
     div.appendChild(a);
     needFirst._total += 1;
-    cb('done');
   }
 
   // calling array from Object and output to console
   function searchList(flow, cb) {
     for(let n of needFirst._questionList[flow]) {
-      createQuestionLink(n, 'Blender');
+      createQuestionLink(n, flow);
       questions++;
       if(questions == needFirst._questionList[flow].length) cb('done');
     }

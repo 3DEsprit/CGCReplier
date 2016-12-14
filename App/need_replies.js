@@ -3,7 +3,7 @@
   window.replyCheck = window.replyCheck || {};
   var mainUrl = 'https://cgcookie.com/';
   var utils = new replyCheck.Utils;
-  var courseList = replyCheck.getCourses;
+  var courseList = replyCheck.getCourses();
   var courses = new replyCheck.Courses;
   var re = /(?:discussion--item__parent)[^]*?(?:<span class="discussion--reply-count">)(\d{1})/ig;
   var urltotal = 0, lessontotal = 0;
@@ -34,20 +34,18 @@
               if(r.slice(-1, r.length) === '0') matchTotal += 1;
               if(matchTotal > 0)
                 replyCheck.getNeedReplies()._questionList[flow].push(fullUrl);
-                courseList()._total += 1;
-              if(urltotal === courses[flow].length) cb('ListDone');
+              if(urltotal === courses[flow].length) cb();
               break;
             }
           } else {
             urltotal++;
-            if(urltotal === courses[flow].length) cb('ListDone');
+            if(urltotal === courses[flow].length) cb();
           }
         });
       });
     },
     checkLesson: function(flow, cb) {
-      console.log('check lessons');
-      courseList()[flow + 'Lesson'].map((url) => {
+      courseList[flow + 'Lesson'].map((url) => {
         let fullUrl = mainUrl + url + '?discussion-page=1#discussion';
         utils.fetchPage(fullUrl, (out) => {
           let match = out.match(re);
@@ -58,13 +56,14 @@
               if(r.slice(-1, r.length) === '0') matchTotal += 1;
               if(matchTotal > 0)
                 replyCheck.getNeedReplies()._questionList[flow].push(fullUrl);
-                courseList()._total += 1;
-              if(lessontotal === courseList()[flow + 'Lesson'].length) cb('LessonDone');
+              if(lessontotal === courseList[flow + 'Lesson'].length)
+                replyCheck.getNeedReplies()._total += replyCheck.getNeedReplies()._questionList[flow].length;
+                cb();
               break;
             }
           } else {
             lessontotal++;
-            if(lessontotal === courseList()[flow + 'Lesson'].length) cb('LessonDone');
+            if(lessontotal === courseList[flow + 'Lesson'].length) cb();
           }
         });
       });
