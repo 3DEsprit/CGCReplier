@@ -1,7 +1,7 @@
 // background process
 (function() {
   // watch intervals and start searching
-  var lastTime = 0, waitTime = 0, pollTime = 15000, message, status, links = 0;
+  var nextTime, waitTime = 0, pollTime = 15000, message, status, links = 0, checkTime;
   var utils = new replyCheck.Utils;
   var prefs = new replyCheck.Prefs;
   var courseFirst = replyCheck.getCourses();
@@ -100,37 +100,38 @@
   }
 
   function addTime(time) {
-    var time = new Date();
-    lastTime = new Date(lastTime.getTime() + (time * 60 * 1000));
-    console.log('Lasttime: ' + lastTime, 'Time: ' + time);
+    nextTime = new Date();
+    console.log('Current: ' + nextTime.getTime(), ' Add time: ' + time);
+    nextTime.setMinutes(nextTime.getMinutes() + time);
+    console.log('Time Added: ' + nextTime.getTime());
+    console.log('Current Time: ' + Date.now(), ' Next Time: ' + nextTime.getTime());
   }
 
   function updateList() {
-    console.log('updating list');
-
-    var oldTime = waitTime;
+    let oldTime = waitTime;
     prefs._get('waitTime', (store) => {
       waitTime = store;
+      if(waitTime !== oldTime) {
+        console.log('reset interval');
+        clearInterval(checkTime);
+        checkTime = setInterval(updateList, pollTime);
+        console.log('Reset: updating list');
+        checkQuestions();
+      }
     });
 
-    if(waitTime !== oldTime) {
-      console.log('reset interval');
-      // checkQuestions();
-      addTime(waitTime);
-    }
+    if(nextTime !== undefined) {
+      console.log(' Wait: ' + waitTime + ' Time: ' + Date.now() +
+        ' Next: ' + nextTime.getTime());
 
-    console.log(' Wait: ' + waitTime + ' Time: ' + Date.now() +
-      ' Last: ' + lastTime);
-
-    if(lastTime === 0) {
-      checkQuestions();
-    } else if(lastTime >= Date.now()) {
-      checkQuestions();
-      addTime(waitTime);
+      if(Date.now() >= nextTime.getTime()) {
+        console.log('Timeout: updating list');
+        checkQuestions();
+      }
     }
   }
 
-  var checkTime = setInterval(updateList, pollTime);
+  checkTime = setInterval(updateList, pollTime);
 
   function start() {
     updateList();
