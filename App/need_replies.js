@@ -10,7 +10,12 @@
 
   replyCheck.NeedReplies = function() {
     this._total = 0;
-    this._questionList = [];
+    this._questionList = {
+      Blender: [],
+      Concept: [],
+      Sculpt: [],
+      Unity: []
+    };
     this.mainUrl = 'https://cgcookie.com/';
     this.lessons = [];
   };
@@ -28,7 +33,7 @@
               urltotal++;
               if(r.slice(-1, r.length) === '0') matchTotal += 1;
               if(matchTotal > 0)
-                replyCheck.getNeedReplies()._questionList.push(fullUrl);
+                replyCheck.getNeedReplies()._questionList[flow].push(fullUrl);
                 courseList()._total += 1;
               if(urltotal === courses[flow].length) cb('ListDone');
               break;
@@ -52,7 +57,7 @@
               lessontotal++;
               if(r.slice(-1, r.length) === '0') matchTotal += 1;
               if(matchTotal > 0)
-                replyCheck.getNeedReplies()._questionList.push(fullUrl);
+                replyCheck.getNeedReplies()._questionList[flow].push(fullUrl);
                 courseList()._total += 1;
               if(lessontotal === courseList()[flow + 'Lesson'].length) cb('LessonDone');
               break;
@@ -64,8 +69,8 @@
         });
       });
     },
-    forEach: function(cb) {
-      replyCheck.getNeedReplies()._questionList.map((key) => {
+    forEach: function(flow, cb) {
+      replyCheck.getNeedReplies()._questionList[flow].map((key) => {
         cb(key);
       });
     }
