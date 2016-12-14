@@ -53,11 +53,11 @@
             for(var r of match) {
               lessontotal++;
               if(r.slice(-1, r.length) === '0') matchTotal += 1;
-              if(matchTotal > 0)
-                replyCheck.getNeedReplies()._questionList[flow].push(fullUrl);
-              if(lessontotal === courseList[flow + 'Lesson'].length)
+              if(matchTotal > 0) replyCheck.getNeedReplies()._questionList[flow].push(fullUrl);
+              if(lessontotal === courseList[flow + 'Lesson'].length) {
                 replyCheck.getNeedReplies()._total += replyCheck.getNeedReplies()._questionList[flow].length;
-                cb();
+                cb('Lessons done');
+              }
               break;
             }
           } else {
