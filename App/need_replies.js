@@ -17,7 +17,6 @@
       Unity: []
     };
     this.mainUrl = 'https://cgcookie.com/';
-    this.lessons = [];
   };
 
   replyCheck.NeedReplies.prototype = {
