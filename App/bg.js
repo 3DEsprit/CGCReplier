@@ -1,7 +1,7 @@
 // background process
 (function() {
   // watch intervals and start searching
-  var nextTime, waitTime = 0, pollTime = 15000, message, status, links = 0, checkTime;
+  var nextTime, lastTime, waitTime = 0, pollTime = 15000, message, status, links = 0, checkTime, topics = [];
   var utils = new replyCheck.Utils;
   var prefs = new replyCheck.Prefs;
   var courseFirst = replyCheck.getCourses();
@@ -67,44 +67,46 @@
   }
 
   function statusUpdate() {
+    console.log('status update');
     prefs._get('notifications', (store) => {
       status = store;
-    });
-    console.log('Status: ' + status);
-    if(status) {
-      if(total > 0) {
-        message = ' questions unanswered on the site right now.';
-      } else {
-        message = ' messages! Relax, and enjoy a cup of coffee.'
+      console.log('Status: ' + status);
+      if(status) {
+        if(needFirst._total > 0) {
+          message = ' questions unanswered on the site right now.';
+        } else {
+          message = ' messages! Relax, and enjoy a cup of coffee.';
+        }
+        var notification = new Notification('CGCookie Questions', {
+          icon: chrome.extension.getURL('icon.png'),
+          body: needFirst._total + message
+        });
       }
-      chrome.notifications.create('basic', {
-        icon: chrome.extension.getURL('icon.png'),
-        body: needFirst._total + message
-      });
-    }
+    });
   }
 
-  function initialCheck(flow) {
+  function initialCheck(flow, cb) {
     populateLessons(flow, () => {
       checkFlow(flow, () => {
         checkLessons(flow, () => {
           badgeUpdate();
+          cb();
         });
       });
     });
   }
 
   function checkQuestions() {
+    // prefs._get('')
     // initialCheck('Blender');
     addTime(waitTime);
+    statusUpdate();
   }
 
   function addTime(time) {
-    nextTime = new Date();
-    console.log('Current: ' + nextTime.getTime(), ' Add time: ' + time);
-    nextTime.setMinutes(nextTime.getMinutes() + time);
-    console.log('Time Added: ' + nextTime.getTime());
-    console.log('Current Time: ' + Date.now(), ' Next Time: ' + nextTime.getTime());
+    lastTime = new Date();
+    nextTime = lastTime.getTime() + time * 60000;
+    console.log('Current Time: ' + Date.now(), ' Next Time: ' + nextTime);
   }
 
   function updateList() {
@@ -122,9 +124,9 @@
 
     if(nextTime !== undefined) {
       console.log(' Wait: ' + waitTime + ' Time: ' + Date.now() +
-        ' Next: ' + nextTime.getTime());
+        ' Next: ' + nextTime);
 
-      if(Date.now() >= nextTime.getTime()) {
+      if(Date.now() >= nextTime) {
         console.log('Timeout: updating list');
         checkQuestions();
       }
