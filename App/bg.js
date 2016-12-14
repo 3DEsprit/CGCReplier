@@ -100,9 +100,9 @@
   }
 
   function addTime(time) {
-    var date = new Date();
-    lastTime = date.setMinutes(date.getMinutes() + time);
-    console.log('Lasttime: ' + lastTime, 'Time: ' + date);
+    var time = new Date();
+    lastTime = new Date(lastTime.getTime() + (time * 60 * 1000));
+    console.log('Lasttime: ' + lastTime, 'Time: ' + time);
   }
 
   function updateList() {
