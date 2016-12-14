@@ -28,6 +28,11 @@
         store.options[key] = val;
         chrome.storage.sync.set(store);
       });
+    },
+    checkSettings: function() {
+      chrome.storage.sync.get(this._settings, (store) => {
+        console.log(store);
+      });
     }
   };
 })();
