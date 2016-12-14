@@ -24,32 +24,29 @@
     needFirst._total += 1;
   }
 
-  // calling array from Object and output to console
   function searchList(flow, cb) {
-    for(let n of needFirst._questionList[flow]) {
-      createQuestionLink(n, flow);
-      questions++;
-      if(questions == needFirst._questionList[flow].length) cb('done');
+    if(needFirst._questionList[flow].length !== 0) {
+      for(let n of needFirst._questionList[flow]) {
+        createQuestionLink(n, flow);
+        questions++;
+        if(questions == needFirst._questionList[flow].length) cb('done');
+        // needFirst._questionList = [];
+      }
+    } else {
+      cb('done');
     }
-    // needFirst._questionList = [];
   }
 
-  chrome.runtime.onStartup.addListener((out) => {
-    // Grab NeedReplies _total and update badge
-    console.log('Popup Start', out);
-  });
-
-  chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
-    if(req.action == 'done') console.log('received');
-    searchList('Blender', (out) => {
-      console.log(out);
-    });
-  });
-
   function start() {
-    console.log('Starting Popup ' + chrome.app.getDetails().version);
+    // console.log('Starting Popup ' + chrome.app.getDetails().version);
     searchList('Blender', (out) => {
-      console.log(out);
+      if(out === 'done') searchList('Concept', (out) => {
+        if(out === 'done') searchList('Sculpt', (out) => {
+          if(out === 'done') searchList('Unity', (out) => {
+            if(out === 'done') console.log('Done traversing lists');
+          });
+        });
+      });
     });
   }
   start();
