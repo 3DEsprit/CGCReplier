@@ -1,7 +1,7 @@
 // background process
 (function() {
   // watch intervals and start searching
-  var nextTime, lastTime, waitTime = 0, pollTime = 15000, message, status, links = 0, checkTime;
+  var nextTime, lastTime, waitTime = 0, pollTime = 15000, message, status, links = 0, checkTime, flash, badgeColor = true;
   var utils = new replyCheck.Utils;
   var prefs = new replyCheck.Prefs;
   var courseFirst = replyCheck.getCourses();
@@ -51,6 +51,23 @@
     });
   }
 
+
+
+  function flashBadge() {
+    flash = setInterval(() => {
+      if(badgeColor) {
+        chrome.browserAction.setBadgeText({text: ' '});
+        chrome.browserAction.setBadgeBackgroundColor({color: [245, 245, 255, 255]});
+        badgeColor = false;
+      } else if(!badgeColor) {
+        chrome.browserAction.setBadgeText({text: ' '});
+        chrome.browserAction.setBadgeBackgroundColor({color: [225, 255, 225, 255]});
+        badgeColor = true;
+      }
+    }, 250);
+  }
+
+
   function badgeUpdate() {
     if(!needFirst._total || needFirst._total === 0) {
       chrome.browserAction.setBadgeText({text: '0'});
@@ -84,7 +101,7 @@
 
   function initialCheck(flow, cb) {
     prefs._get(flow, (store) => {
-      if(store) {
+      if(store === true) {
         console.log('Checking ' + flow);
         populateLessons(flow, () => {
           checkFlow(flow, () => {
@@ -101,6 +118,7 @@
   }
 
   function checkQuestions() {
+    flashBadge();
     initialCheck('Blender', (done) => {
       if (done)
         console.log('Blender done!');
@@ -113,8 +131,9 @@
             initialCheck('Unity', (done) => {
             if (done) {
               console.log('Unity done! All done!');
-              // addTime(waitTime);
-              // statusUpdate();
+              clearInterval(flash);
+              addTime(waitTime);
+              statusUpdate();
             }
           });
         });
