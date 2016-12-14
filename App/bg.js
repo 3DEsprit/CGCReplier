@@ -2,6 +2,7 @@
 (function() {
   // watch intervals and start searching
   var nextTime, lastTime, waitTime = 0, pollTime = 15000, message, status, links = 0, checkTime, topics = [];
+  var topicList = ['Blender', 'Concept', 'Sculpt', 'Unity'];
   var utils = new replyCheck.Utils;
   var prefs = new replyCheck.Prefs;
   var courseFirst = replyCheck.getCourses();
@@ -96,11 +97,33 @@
     });
   }
 
+  function prefCheck(cb) {
+    var iteration = 0;
+    for(var topic of topicList) {
+      console.log('Checking ' + topic);
+      prefs.checkSettings();
+      prefs._get(topic, (store) => {
+        iteration++;
+        if(topic) topics.push(store);
+        if(iteration === topicList.length) cb(topics);
+      });
+    }
+  }
+
   function checkQuestions() {
-    // prefs._get('')
-    // initialCheck('Blender');
-    addTime(waitTime);
-    statusUpdate();
+    prefCheck((topics) => {
+      console.log('Check done: ' + topics);
+      for(let n of topics) {
+        if(topics.indexOf(n)) {
+          console.log('Fire ' + n);
+          if(n === topics[topics.length - 1]) {
+            console.log('end of array');
+            addTime(waitTime);
+            statusUpdate();
+          }
+        }
+      }
+    });
   }
 
   function addTime(time) {
