@@ -9,10 +9,10 @@
         pollTime: 15000,
         waitTime: 15,
         notifications: false,
-        blender: false,
-        concept: false,
-        sculpt: false,
-        unity: false
+        Blender: false,
+        Concept: false,
+        Sculpt: false,
+        Unity: false
       }
     }
   };
