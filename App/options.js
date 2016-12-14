@@ -8,32 +8,32 @@
   var prefs = new replyCheck.Prefs;
 
   function start() {
-    var blender = document.getElementById('blenderBox');
-    prefs._get('blender', (useFlow) => {
-      blender.checked = useFlow;
-      blender.addEventListener('click', () => {
-        prefs._set('blender', blender.checked);
+    var Blender = document.getElementById('blenderBox');
+    prefs._get('Blender', (useFlow) => {
+      Blender.checked = useFlow;
+      Blender.addEventListener('click', () => {
+        prefs._set('Blender', Blender.checked);
       });
     });
-    var concept = document.getElementById('conceptBox');
-    prefs._get('concept', (useFlow) => {
-      concept.checked = useFlow;
-      concept.addEventListener('click', () => {
-        prefs._set('concept', concept.checked);
+    var Concept = document.getElementById('conceptBox');
+    prefs._get('Concept', (useFlow) => {
+      Concept.checked = useFlow;
+      Concept.addEventListener('click', () => {
+        prefs._set('Concept', Concept.checked);
       });
     });
-    var sculpt = document.getElementById('sculptBox');
-    prefs._get('sculpt', (useFlow) => {
-      sculpt.checked = useFlow;
-      sculpt.addEventListener('click', () => {
-        prefs._set('sculpt', sculpt.checked);
+    var Sculpt = document.getElementById('sculptBox');
+    prefs._get('Sculpt', (useFlow) => {
+      Sculpt.checked = useFlow;
+      Sculpt.addEventListener('click', () => {
+        prefs._set('Sculpt', Sculpt.checked);
       });
     });
-    var unity = document.getElementById('unityBox');
-    prefs._get('unity', (useFlow) => {
-      unity.checked = useFlow;
-      unity.addEventListener('click', () => {
-        prefs._set('unity', unity.checked);
+    var Unity = document.getElementById('unityBox');
+    prefs._get('Unity', (useFlow) => {
+      Unity.checked = useFlow;
+      Unity.addEventListener('click', () => {
+        prefs._set('Unity', Unity.checked);
       });
     });
     var notif = document.getElementById('notifications');
