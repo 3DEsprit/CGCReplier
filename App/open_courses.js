@@ -1,9 +1,7 @@
 (function() {
-  // background script
-  // reply list getter/setter and list
+
   window.replyCheck = window.replyCheck || {};
 
-  // Adding methods and array to object
   replyCheck.Courses = function() {
     this.Blender = [
         'course/blender-basics/', 'course/mesh-modeling-fundamentals/',
@@ -46,9 +44,9 @@
     this.UnityLesson = [];
   };
 
+  // placeholder for adding courses
   replyCheck.Courses.prototype = {
     forEach: function(cb) {
-      // for (var reply of need._questionList)
         cb();
     },
     setCourse: function(replies) {
