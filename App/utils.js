@@ -1,7 +1,4 @@
-// background process
-// Load DOM Data
 (function() {
-  // module to grab pages
   window.replyCheck = window.replyCheck || {};
 
   replyCheck.Utils = function() {
