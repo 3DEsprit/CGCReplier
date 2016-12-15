@@ -35,20 +35,23 @@
     }
   }
 
-  function flashBadge() {
-    flash = setInterval(() => {
-      if(badgeColor) {
-        chrome.browserAction.setBadgeText({text: '/'});
-        chrome.browserAction.setBadgeBackgroundColor({color: [245, 245, 255, 255]});
-        badgeColor = false;
-      } else if(!badgeColor) {
-        chrome.browserAction.setBadgeText({text: '\\'});
-        chrome.browserAction.setBadgeBackgroundColor({color: [225, 255, 225, 255]});
-        badgeColor = true;
-      }
-    }, 500);
+  function flashBadge(cmd) {
+    if(cmd === 'start') {
+      flash = setInterval(() => {
+        if(badgeColor) {
+          chrome.browserAction.setBadgeText({text: '/'});
+          chrome.browserAction.setBadgeBackgroundColor({color: [245, 245, 255, 255]});
+          badgeColor = false;
+        } else if(!badgeColor) {
+          chrome.browserAction.setBadgeText({text: '\\'});
+          chrome.browserAction.setBadgeBackgroundColor({color: [225, 255, 225, 255]});
+          badgeColor = true;
+        }
+      }, 500);
+    } else if(cmd === 'stop') {
+      clearInterval(flash);
+    }
   }
-
 
   function badgeUpdate() {
     console.log('Update badge');
@@ -83,13 +86,13 @@
   }
 
   function initialCheck(flow, cb) {
-    flashBadge();
     prefs._get(flow, (store) => {
       if(store) {
+        // flashBadge('start');
         populateLessons(flow, () => {
           need.checkList(flow, () => {
             need.checkLesson(flow, () => {
-              clearInterval(checkTime);
+              // flashBadge('stop');
               badgeUpdate();
               console.log('Done! ' + flow);
               cb();
@@ -97,24 +100,9 @@
           });
         });
       } else {
-        clearInterval(checkTime);
         console.log('Skipping ' + flow);
         cb();
       }
-    });
-  }
-
-  function checkQuestions() {
-    console.log('check questions');
-    initialCheck('Blender', () => {
-      initialCheck('Concept', () => {
-        initialCheck('Sculpt', () => {
-          initialCheck('Unity', () => {
-            addTime(waitTime);
-            statusUpdate();
-          });
-        });
-      });
     });
   }
 
@@ -124,8 +112,22 @@
     nextTime = lastTime.getTime() + time * 60000;
   }
 
+  function checkQuestions() {
+    console.log('check questions');
+    addTime(waitTime);
+    initialCheck('Blender', () => {
+      initialCheck('Concept', () => {
+        initialCheck('Sculpt', () => {
+          initialCheck('Unity', () => {
+            statusUpdate();
+          });
+        });
+      });
+    });
+  }
+
   function updateList() {
-    let oldTime = waitTime;
+    var oldTime = waitTime;
     prefs._get('waitTime', (store) => {
       waitTime = store;
       if(waitTime === 0) { waitTime = 15; }
