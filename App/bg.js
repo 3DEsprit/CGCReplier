@@ -19,7 +19,7 @@
         for(let m of match) {
           var url = /lesson\/[a-z\-]*?\//ig;
           courseFirst[flow + 'Lesson'].push(m.match(url).toString());
-          if(links === courses[flow].length) cb('linksDone');
+          if(links === courses[flow].length && m === match[match.length -1]) { cb('linksDone'); }
         }
       });
     }
@@ -43,19 +43,19 @@
 
   function checkLessons(flow, cb) {
     console.log('Lessons');
-    needFirst.checkLesson(flow, (out) => {
-      if(out === 'lessonsDone') cb();
+    needFirst.checkLesson(flow, () => {
+      cb();
     });
   }
 
   function flashBadge() {
     flash = setInterval(() => {
       if(badgeColor) {
-        chrome.browserAction.setBadgeText({text: ' '});
+        chrome.browserAction.setBadgeText({text: '/'});
         chrome.browserAction.setBadgeBackgroundColor({color: [245, 245, 255, 255]});
         badgeColor = false;
       } else if(!badgeColor) {
-        chrome.browserAction.setBadgeText({text: ' '});
+        chrome.browserAction.setBadgeText({text: '\\'});
         chrome.browserAction.setBadgeBackgroundColor({color: [225, 255, 225, 255]});
         badgeColor = true;
       }
@@ -64,6 +64,7 @@
 
 
   function badgeUpdate() {
+    console.log('Update badge');
     if(!needFirst._total || needFirst._total === 0) {
       chrome.browserAction.setBadgeText({text: '0'});
     } else if (needFirst._total > 99) {
@@ -79,6 +80,7 @@
   }
 
   function statusUpdate() {
+    console.log('update notification status');
     prefs._get('notifications', (store) => {
       status = store;
       if(status && nextTime) {
@@ -95,40 +97,49 @@
   function initialCheck(flow, cb) {
     populateLessons(flow, () => {
       prefs._get(flow, (store) => {
-        console.log(store);
         if(store) {
           checkFlow(flow, () => {
-            checkLessons(flow, () => {
-              cb(true);
+            checkLessons(flow, (out) => {
+              if(out === 'done') {
+                console.log('Done! ' + flow);
+                cb('finish');
+              }
             });
           });
-        } else {
-          cb(true);
-        }
+        } else { cb('finish'); }
       });
     });
   }
 
   function checkQuestions() {
     flashBadge();
-    initialCheck('Blender', (done) => {
-      if (done) initialCheck('Concept', (done) => {
-        if (done) initialCheck('Sculpt', (done) => {
-          if (done) initialCheck('Unity', (done) => {
-            if (done) {
-              console.log('All done!');
-              clearInterval(flash);
-              badgeUpdate();
-              addTime(waitTime);
-              statusUpdate();
-            }
-          });
-        });
-      });
+    // initialCheck('Blender', (done) => {
+      // if (done)
+    initialCheck('Concept', (done) => {
+        // if (done) initialCheck('Sculpt', (done) => {
+          // if (done) initialCheck('Unity', (done) => {
+      // if(done === 'finish') {
+        console.log('All done!');
+        clearInterval(flash);
+        badgeUpdate();
+        addTime(waitTime);
+        statusUpdate();
+      // }
+      //     });
+      //   });
+      // });
     });
   }
 
+  function checkLists() {
+    console.log(courseFirst.BlenderLesson,
+      courseFirst.ConceptLesson,
+      courseFirst.SculptLesson,
+      courseFirst.UnityLesson);
+  }
+
   function addTime(time) {
+    console.log('addTime');
     lastTime = new Date();
     nextTime = lastTime.getTime() + time * 60000;
   }
@@ -137,8 +148,9 @@
     let oldTime = waitTime;
     prefs._get('waitTime', (store) => {
       waitTime = store;
-      if(waitTime === 0) waitTime = 15;
+      if(waitTime === 0) { waitTime = 15; }
       if(waitTime !== oldTime) {
+        console.log('reset');
         clearInterval(checkTime);
         checkTime = setInterval(updateList, pollTime);
         checkQuestions();
@@ -147,6 +159,7 @@
 
     if(nextTime !== undefined) {
       if(Date.now() >= nextTime) {
+        console.log('timeout');
         checkQuestions();
       }
     }

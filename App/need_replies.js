@@ -30,19 +30,19 @@
             var matchTotal = 0;
             if(match === null) {
               urltotal++;
-              if(urltotal === courses[flow].length) cb();
+              if(urltotal === courses[flow].length) { cb(); }
             } else if(match.length) {
+              urltotal++;
               for(var r of match) {
-                urltotal++;
-                if(r.slice(-1, r.length) === '0') matchTotal += 1;
+                if(r.slice(-1, r.length) === '0') { matchTotal += 1; }
                 if(matchTotal > 0)
                   replyCheck.getNeedReplies()._questionList[flow].push(fullUrl);
-                if(urltotal === courses[flow].length) cb();
+                if(urltotal === courses[flow].length) { cb(); }
                 break;
               }
             } else {
               urltotal++;
-              if(urltotal === courses[flow].length) cb();
+              if(urltotal === courses[flow].length) { cb(); }
             }
           }
         });
@@ -56,23 +56,29 @@
           var matchTotal = 0;
           if(match === null) {
             lessontotal++;
-            if(lessontotal === courseList[flow + 'Lesson'].length) cb();
+            if(lessontotal === courseList[flow + 'Lesson'].length) {
+              debugger;
+              cb('done');
+            }
           } else if(match.length) {
-            for(var r of match) {
-              lessontotal++;
-              if(r.slice(-1, r.length) === '0') matchTotal += 1;
+            lessontotal++;
+            for(let r of match) {
+              if(r.slice(-1, r.length) === '0') { matchTotal += 1; }
               if(matchTotal > 0) {
                 replyCheck.getNeedReplies()._questionList[flow].push(fullUrl);
+                if(lessontotal === courseList[flow + 'Lesson'].length && matchTotal > 0 ||
+                  lessontotal === courseList[flow + 'Lesson'].length && r === match[match.length - 1]) {
+                  replyCheck.getNeedReplies()._total += replyCheck.getNeedReplies()._questionList[flow].length;
+                  cb('done');
+                }
                 break;
-              }
-              if(lessontotal === courseList[flow + 'Lesson'].length) {
-                replyCheck.getNeedReplies()._total += replyCheck.getNeedReplies()._questionList[flow].length;
-                cb('LessonsDone');
               }
             }
           } else {
             lessontotal++;
-            if(lessontotal === courseList[flow + 'Lesson'].length) cb();
+            if(lessontotal === courseList[flow + 'Lesson'].length) {
+              cb('done');
+            }
           }
         });
       }
@@ -87,8 +93,9 @@
   // make single instance for extension
   replyCheck.getNeedReplies = function() {
     var background = chrome.extension.getBackgroundPage();
-    if (!background.replyCheck.hasOwnProperty('needReplies'))
+    if (!background.replyCheck.hasOwnProperty('needReplies')) {
       background.replyCheck.needReplies = new replyCheck.NeedReplies;
+    }
     return background.replyCheck.needReplies;
   };
 })();
