@@ -101,6 +101,7 @@
   }
 
   function checkQuestions() {
+    console.log('check questions');
     flashBadge();
     initialCheck('Blender', () => {
       initialCheck('Concept', () => {
