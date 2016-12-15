@@ -1,4 +1,4 @@
-#CGCookie Replier 0.8.11 (Beta)
+#CGCookie Replier 0.8.13 (Beta)
 
 ### A simple Chrome Extension to check the questions on the website, cgcookie.com, and look for those questions with zero replies.
 
