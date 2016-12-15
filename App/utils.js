@@ -25,9 +25,9 @@
       var stopTime = Date.newDate() + pollTime;
       var timeInterval = (resolve, reject) => {
         var res = cb();
-        if(res) resolve(res);
-        else if(Date.newDate() < stopTime) reject(new Error(cb));
-        else reject(new Error('Time over'));
+        if(res) { resolve(res); }
+        else if (Date.newDate() < stopTime) { reject(new Error(cb)); }
+        else { reject(new Error('Time over')); }
       };
     }
   };

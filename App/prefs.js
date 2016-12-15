@@ -29,6 +29,11 @@
         chrome.storage.sync.set(store);
       });
     },
+    _getSync: function(key) {
+      chrome.storage.sync.get(this._settings, (store) => {
+        return (store.options[key]);
+      });
+    },
     checkSettings: function() {
       chrome.storage.sync.get(this._settings, (store) => {
         console.log(store);
