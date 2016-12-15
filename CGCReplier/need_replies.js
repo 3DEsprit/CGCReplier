@@ -65,9 +65,9 @@
               if(r.slice(-1, r.length) === '0') { matchTotal += 1; }
               if(matchTotal > 0) {
                 replyCheck.getNeedReplies()._questionList[flow].push(fullUrl);
+                replyCheck.getNeedReplies()._total += 1;
                 if(lessontotal === courseList[flow + 'Lesson'].length && matchTotal > 0 ||
                   lessontotal === courseList[flow + 'Lesson'].length && r === match[match.length - 1]) {
-                  replyCheck.getNeedReplies()._total += replyCheck.getNeedReplies()._questionList[flow].length;
                   cb();
                 }
                 break;
