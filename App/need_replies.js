@@ -58,7 +58,7 @@
             lessontotal++;
             if(lessontotal === courseList[flow + 'Lesson'].length) {
               debugger;
-              cb('done');
+              cb();
             }
           } else if(match.length) {
             lessontotal++;
@@ -69,7 +69,7 @@
                 if(lessontotal === courseList[flow + 'Lesson'].length && matchTotal > 0 ||
                   lessontotal === courseList[flow + 'Lesson'].length && r === match[match.length - 1]) {
                   replyCheck.getNeedReplies()._total += replyCheck.getNeedReplies()._questionList[flow].length;
-                  cb('done');
+                  cb();
                 }
                 break;
               }
@@ -77,7 +77,7 @@
           } else {
             lessontotal++;
             if(lessontotal === courseList[flow + 'Lesson'].length) {
-              cb('done');
+              cb();
             }
           }
         });

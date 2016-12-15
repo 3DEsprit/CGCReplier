@@ -25,12 +25,6 @@
     }
   }
 
-  function checkFlow(flow, cb) {
-    needFirst.checkList(flow, () => {
-      cb();
-    });
-  }
-
   function populateLessons(flow, cb) {
     if(courseFirst[flow + 'Lesson'].length === 0) {
       grabLinks(flow, (out) => {
@@ -39,13 +33,6 @@
     } else {
       cb();
     }
-  }
-
-  function checkLessons(flow, cb) {
-    console.log('Lessons');
-    needFirst.checkLesson(flow, () => {
-      cb();
-    });
   }
 
   function flashBadge() {
@@ -79,63 +66,58 @@
     }
   }
 
-  function statusUpdate() {
-    console.log('update notification status');
-    prefs._get('notifications', (store) => {
-      status = store;
-      if(status && nextTime) {
-        if(needFirst._total > 0) {
-          var notification = new Notification('CGCookie Questions', {
-            icon: chrome.extension.getURL('icon.png'),
-            body: needFirst._total + message
-          });
-        }
-      }
-    });
-  }
+  // function statusUpdate() {
+  //   console.log('update notification status');
+  //   prefs._get('notifications', (store) => {
+  //     status = store;
+  //     if(status && nextTime) {
+  //       if(needFirst._total > 0) {
+  //         var notification = new Notification('CGCookie Questions', {
+  //           icon: chrome.extension.getURL('icon.png'),
+  //           body: needFirst._total + message
+  //         });
+  //       }
+  //     }
+  //   });
+  // }
 
   function initialCheck(flow, cb) {
-    populateLessons(flow, () => {
       prefs._get(flow, (store) => {
         if(store) {
-          checkFlow(flow, () => {
-            checkLessons(flow, (out) => {
-              if(out === 'done') {
+          debugger;
+          populateLessons(flow, () => {
+            need.checkList(flow, () => {
+              need.checkLesson(flow, () => {
                 console.log('Done! ' + flow);
-                cb('finish');
-              }
+                cb();
+              });
             });
           });
-        } else { cb('finish'); }
-      });
+        } else {
+          console.log('Skipping ' + flow);
+          cb();
+        }
     });
   }
 
   function checkQuestions() {
-    flashBadge();
-    // initialCheck('Blender', (done) => {
-      // if (done)
-    initialCheck('Concept', (done) => {
-        // if (done) initialCheck('Sculpt', (done) => {
-          // if (done) initialCheck('Unity', (done) => {
-      // if(done === 'finish') {
-        console.log('All done!');
-        clearInterval(flash);
-        badgeUpdate();
-        addTime(waitTime);
-        statusUpdate();
-      // }
-      //     });
-      //   });
-      // });
+    // flashBadge();
+    initialCheck('Blender', () => {
+      debugger;
+      initialCheck('Concept', () => {
+        debugger;
+        initialCheck('Sculpt', () => {
+          debugger;
+          initialCheck('Unity', () => {
+            console.log('All done!');
+            // clearInterval(flash);
+            badgeUpdate();
+            addTime(waitTime);
+            // statusUpdate();
+          });
+        });
+      });
     });
-  }
-
-  function checkLists() {
-    console.log(courseFirst.BlenderLesson,
-      courseFirst.ConceptLesson,
-      courseFirst.SculptLesson,
-      courseFirst.UnityLesson);
   }
 
   function addTime(time) {
