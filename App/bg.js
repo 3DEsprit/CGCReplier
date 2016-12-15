@@ -10,20 +10,19 @@
   var need = new replyCheck.NeedReplies;
 
   function grabLinks(flow, cb) {
-    console.log('grab Links');
-    courses[flow].map((course) => {
+    for(let course of courses[flow]) {
       var fullUrl = need.mainUrl + course + '#lessons';
       utils.fetchPage(fullUrl, (out) => {
         var re = /(?:lesson-list-item )[^]*?(?:<a href="https:\/\/cgcookie.com\/)lesson\/[a-z\-]*?\//ig;
         let match = out.match(re);
-        match.map((m) => {
+        links++;
+        for(let m of match) {
           var url = /lesson\/[a-z\-]*?\//ig;
           courseFirst[flow + 'Lesson'].push(m.match(url).toString());
-          links++;
-          if(links === courses[flow].length) cb('gotLinks');
-        });
+          if(links === courses[flow].length) cb('linksDone');
+        }
       });
-    });
+    }
   }
 
   function checkFlow(flow, cb) {
@@ -32,26 +31,22 @@
     });
   }
 
+  function populateLessons(flow, cb) {
+    if(courseFirst[flow + 'Lesson'].length === 0) {
+      grabLinks(flow, (out) => {
+        if(out === 'linksDone') cb();
+      });
+    } else {
+      cb();
+    }
+  }
+
   function checkLessons(flow, cb) {
     console.log('Lessons');
-    needFirst.checkLesson(flow, () => {
-      cb();
+    needFirst.checkLesson(flow, (out) => {
+      if(out === 'lessonsDone') cb();
     });
   }
-
-  function populateLessons(flow, cb) {
-    if(courseFirst[flow + 'Lesson'].length == 0) grabLinks(flow, (out) => {
-      cb();
-    });
-  }
-
-  function cycleQuestions() {
-    needFirst.forEach(() => {
-      console.log('cycling through list');
-    });
-  }
-
-
 
   function flashBadge() {
     flash = setInterval(() => {
@@ -64,7 +59,7 @@
         chrome.browserAction.setBadgeBackgroundColor({color: [225, 255, 225, 255]});
         badgeColor = true;
       }
-    }, 250);
+    }, 500);
   }
 
 
@@ -84,10 +79,8 @@
   }
 
   function statusUpdate() {
-    console.log('status update');
     prefs._get('notifications', (store) => {
       status = store;
-      console.log('Status: ' + status);
       if(status && nextTime) {
         if(needFirst._total > 0) {
           var notification = new Notification('CGCookie Questions', {
@@ -100,38 +93,32 @@
   }
 
   function initialCheck(flow, cb) {
-    prefs._get(flow, (store) => {
-      if(store === true) {
-        console.log('Checking ' + flow);
-        populateLessons(flow, () => {
+    populateLessons(flow, () => {
+      prefs._get(flow, (store) => {
+        console.log(store);
+        if(store) {
           checkFlow(flow, () => {
             checkLessons(flow, () => {
-              badgeUpdate();
               cb(true);
             });
           });
-        });
-      } else {
-        cb(true);
-      }
+        } else {
+          cb(true);
+        }
+      });
     });
   }
 
   function checkQuestions() {
     flashBadge();
     initialCheck('Blender', (done) => {
-      if (done)
-        console.log('Blender done!');
-        initialCheck('Concept', (done) => {
-        if (done)
-          console.log('Concept done!')
-          initialCheck('Sculpt', (done) => {
-          if (done)
-            console.log('Sculpt done!')
-            initialCheck('Unity', (done) => {
+      if (done) initialCheck('Concept', (done) => {
+        if (done) initialCheck('Sculpt', (done) => {
+          if (done) initialCheck('Unity', (done) => {
             if (done) {
-              console.log('Unity done! All done!');
+              console.log('All done!');
               clearInterval(flash);
+              badgeUpdate();
               addTime(waitTime);
               statusUpdate();
             }
@@ -154,14 +141,12 @@
       if(waitTime !== oldTime) {
         clearInterval(checkTime);
         checkTime = setInterval(updateList, pollTime);
-        console.log('Reset: updating list');
         checkQuestions();
       }
     });
 
     if(nextTime !== undefined) {
       if(Date.now() >= nextTime) {
-        console.log('Timeout: updating list');
         checkQuestions();
       }
     }
