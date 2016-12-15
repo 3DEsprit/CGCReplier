@@ -10,9 +10,9 @@ CGCookie and icon.png are property of CGCookie Inc. Learn more at http://support
 
 ## Install
 
-* Download the CGCReplier.crx (Add link) to a folder that you can access after
-* Go to the Options menu (three vertical dots) > More tools > Extensions, or simply type in the URL chrome://extensions
-* Drag and Drop the CGCReplier.crx file from your folder on to the Extensions Page
+* Download the [CGCReplier.crx](https://github.com/3DEsprit/CGCReplier/blob/master/CGCReplier.crx) to a folder that you can access after
+* Go to the Options menu (three vertical dots) > More tools > Extensions, or simply type in the URL [chrome://extensions](chrome://extensions)
+* Drag and Drop the [CGCReplier.crx](https://github.com/3DEsprit/CGCReplier/blob/master/CGCReplier.crx) file from your folder on to the Extensions Page
 
 ## How to Use
 
