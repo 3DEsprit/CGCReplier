@@ -35,7 +35,26 @@ a {
   max-width: 400px;
 }
 
-.blender, .concept, .sculpt, .unity {
+.blender {
+  display: none;
+  color: #e9e9e9;
+  padding: 0 15px;
+}
+
+.concept {
+  display: none;
+  color: #e9e9e9;
+  padding: 0 15px;
+}
+
+.sculpt {
+  display: none;
+  color: #e9e9e9;
+  padding: 0 15px;
+}
+
+.unity {
+  display: none;
   color: #e9e9e9;
   padding: 0 15px;
 }
