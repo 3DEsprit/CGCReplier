@@ -66,25 +66,25 @@
     }
   }
 
-  // function statusUpdate() {
-  //   console.log('update notification status');
-  //   prefs._get('notifications', (store) => {
-  //     status = store;
-  //     if(status && nextTime) {
-  //       if(needFirst._total > 0) {
-  //         var notification = new Notification('CGCookie Questions', {
-  //           icon: chrome.extension.getURL('icon.png'),
-  //           body: needFirst._total + message
-  //         });
-  //       }
-  //     }
-  //   });
-  // }
+  function statusUpdate() {
+    console.log('update notification status');
+    prefs._get('notifications', (store) => {
+      status = store;
+      if(status && nextTime) {
+        if(needFirst._total > 0) {
+          var message = ' questions unanswered.';
+          var notification = new Notification('CGCookie Questions', {
+            icon: chrome.extension.getURL('icon.png'),
+            body: needFirst._total.toString() + message
+          });
+        }
+      }
+    });
+  }
 
   function initialCheck(flow, cb) {
       prefs._get(flow, (store) => {
         if(store) {
-          debugger;
           populateLessons(flow, () => {
             need.checkList(flow, () => {
               need.checkLesson(flow, () => {
@@ -101,19 +101,17 @@
   }
 
   function checkQuestions() {
-    // flashBadge();
+    console.log('check questions');
+    flashBadge();
     initialCheck('Blender', () => {
-      debugger;
       initialCheck('Concept', () => {
-        debugger;
         initialCheck('Sculpt', () => {
-          debugger;
           initialCheck('Unity', () => {
             console.log('All done!');
-            // clearInterval(flash);
+            clearInterval(flash);
             badgeUpdate();
             addTime(waitTime);
-            // statusUpdate();
+            statusUpdate();
           });
         });
       });
