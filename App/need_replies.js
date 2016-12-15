@@ -21,51 +21,61 @@
 
   replyCheck.NeedReplies.prototype = {
     checkList: function(flow, cb) {
-      // replyCheck.getNeedReplies()._questionList = [];
-      courses[flow].map((url) => {
+      replyCheck.getNeedReplies()._questionList[flow] = [];
+      for(let url of courses[flow]) {
         let fullUrl = mainUrl + url + '?discussion-page=1#discussion';
         utils.fetchPage(fullUrl, (out) => {
-          let match = out.match(re);
-          var matchTotal = 0;
-          if(match.length) {
-            for(var r of match) {
+          if(out) {
+            let match = out.match(re);
+            var matchTotal = 0;
+            if(match === null) {
               urltotal++;
-              if(r.slice(-1, r.length) === '0') matchTotal += 1;
-              if(matchTotal > 0)
-                replyCheck.getNeedReplies()._questionList[flow].push(fullUrl);
               if(urltotal === courses[flow].length) cb();
-              break;
+            } else if(match.length) {
+              for(var r of match) {
+                urltotal++;
+                if(r.slice(-1, r.length) === '0') matchTotal += 1;
+                if(matchTotal > 0)
+                  replyCheck.getNeedReplies()._questionList[flow].push(fullUrl);
+                if(urltotal === courses[flow].length) cb();
+                break;
+              }
+            } else {
+              urltotal++;
+              if(urltotal === courses[flow].length) cb();
             }
-          } else {
-            urltotal++;
-            if(urltotal === courses[flow].length) cb();
           }
         });
-      });
+      }
     },
     checkLesson: function(flow, cb) {
-      courseList[flow + 'Lesson'].map((url) => {
+      for(let url of courseList[flow + 'Lesson']) {
         let fullUrl = mainUrl + url + '?discussion-page=1#discussion';
         utils.fetchPage(fullUrl, (out) => {
           let match = out.match(re);
           var matchTotal = 0;
-          if(match !== null) {
+          if(match === null) {
+            lessontotal++;
+            if(lessontotal === courseList[flow + 'Lesson'].length) cb();
+          } else if(match.length) {
             for(var r of match) {
               lessontotal++;
               if(r.slice(-1, r.length) === '0') matchTotal += 1;
-              if(matchTotal > 0) replyCheck.getNeedReplies()._questionList[flow].push(fullUrl);
+              if(matchTotal > 0) {
+                replyCheck.getNeedReplies()._questionList[flow].push(fullUrl);
+                break;
+              }
               if(lessontotal === courseList[flow + 'Lesson'].length) {
                 replyCheck.getNeedReplies()._total += replyCheck.getNeedReplies()._questionList[flow].length;
-                cb('Lessons done');
+                cb('LessonsDone');
               }
-              break;
             }
           } else {
             lessontotal++;
             if(lessontotal === courseList[flow + 'Lesson'].length) cb();
           }
         });
-      });
+      }
     },
     forEach: function(flow, cb) {
       replyCheck.getNeedReplies()._questionList[flow].map((key) => {
