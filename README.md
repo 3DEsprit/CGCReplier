@@ -8,7 +8,7 @@
 
 # Install
 
-##
+## There are two ways to install. With the
 
 # How to Use
 
