@@ -57,7 +57,6 @@
           if(match === null) {
             lessontotal++;
             if(lessontotal === courseList[flow + 'Lesson'].length) {
-              debugger;
               cb();
             }
           } else if(match.length) {
