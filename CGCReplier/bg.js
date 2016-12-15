@@ -83,33 +83,33 @@
   }
 
   function initialCheck(flow, cb) {
-      prefs._get(flow, (store) => {
-        if(store) {
-          populateLessons(flow, () => {
-            need.checkList(flow, () => {
-              need.checkLesson(flow, () => {
-                console.log('Done! ' + flow);
-                cb();
-              });
+    flashBadge();
+    prefs._get(flow, (store) => {
+      if(store) {
+        populateLessons(flow, () => {
+          need.checkList(flow, () => {
+            need.checkLesson(flow, () => {
+              clearInterval(checkTime);
+              badgeUpdate();
+              console.log('Done! ' + flow);
+              cb();
             });
           });
-        } else {
-          console.log('Skipping ' + flow);
-          cb();
-        }
+        });
+      } else {
+        clearInterval(checkTime);
+        console.log('Skipping ' + flow);
+        cb();
+      }
     });
   }
 
   function checkQuestions() {
     console.log('check questions');
-    flashBadge();
     initialCheck('Blender', () => {
       initialCheck('Concept', () => {
         initialCheck('Sculpt', () => {
           initialCheck('Unity', () => {
-            console.log('All done!');
-            clearInterval(flash);
-            badgeUpdate();
             addTime(waitTime);
             statusUpdate();
           });
@@ -131,7 +131,7 @@
       if(waitTime === 0) { waitTime = 15; }
       if(waitTime !== oldTime) {
         console.log('reset');
-        clearInterval(checkTime);
+
         checkTime = setInterval(updateList, pollTime);
         checkQuestions();
       }
