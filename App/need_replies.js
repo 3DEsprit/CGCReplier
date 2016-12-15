@@ -21,7 +21,7 @@
 
   replyCheck.NeedReplies.prototype = {
     checkList: function(flow, cb) {
-      replyCheck.getNeedReplies()._questionList[flow] = [];
+      courses[flow + 'Lesson'] = [];
       for(let url of courses[flow]) {
         let fullUrl = mainUrl + url + '?discussion-page=1#discussion';
         utils.fetchPage(fullUrl, (out) => {
@@ -36,7 +36,7 @@
               for(var r of match) {
                 if(r.slice(-1, r.length) === '0') { matchTotal += 1; }
                 if(matchTotal > 0)
-                  replyCheck.getNeedReplies()._questionList[flow].push(fullUrl);
+                  courses[flow + 'Lesson'].push(fullUrl);
                 if(urltotal === courses[flow].length) { cb(); }
                 break;
               }
