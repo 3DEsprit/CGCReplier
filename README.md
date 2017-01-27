@@ -35,3 +35,9 @@ You can also enable desktop notifications for this extension, and when turned on
 ## Extra Features
 
 * Settings are saved with sync data, so you can enjoy the same options across all browsers.
+
+
+## Todo
+
+* Use Existing Login Cookies for account-based Settings
+* Add Refresh Button
