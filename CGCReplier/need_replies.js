@@ -26,6 +26,7 @@
         let fullUrl = mainUrl + url + '?discussion-page=1#discussion';
         utils.fetchPage(fullUrl, (out) => {
           if(out) {
+            console.log(out);
             let match = out.match(re);
             var matchTotal = 0;
             if(match === null) {
