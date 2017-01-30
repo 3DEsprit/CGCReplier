@@ -23,6 +23,8 @@
   "permissions": [
     "activeTab",
     "contextMenus",
+    "cookies",
+    "*://*.cgcookie.com",
     "background",
     "notifications",
     "storage",
